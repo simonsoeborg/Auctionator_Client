@@ -1,4 +1,4 @@
-package Model
+package model
 
 data class UserData (
     val username : String,

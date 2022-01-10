@@ -1,4 +1,4 @@
-package Repository
+package repository
 
 import org.jspace.FormalField
 import org.jspace.RemoteSpace
