@@ -1,9 +1,7 @@
-package Repository
+package repository
 
 import org.jspace.ActualField
 import org.jspace.RemoteSpace
-
-
 
 
 class AuctionRepository_impl(var auctionPort: Int) : AuctionRepository {
