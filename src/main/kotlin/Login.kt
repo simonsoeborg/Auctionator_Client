@@ -37,7 +37,7 @@ fun Login(): Boolean {
                             label = { Text("Enter Username") },
                             placeholder = { Text("Username") }
                         )
-                    }
+                    }/*
                     Row(modifier = Modifier.padding(10.dp)) {
                         TextField(
                             value = userPass.value,
@@ -45,7 +45,7 @@ fun Login(): Boolean {
                             label = { Text("Enter Password") },
                             placeholder = { Text("Password") }
                         )
-                    }
+                    }*/
                     Button(onClick = { isLoggedIn.value = true }) {
                         Text("Submit")
                     }

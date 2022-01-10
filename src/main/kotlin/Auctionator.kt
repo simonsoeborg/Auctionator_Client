@@ -15,6 +15,7 @@ fun Auctionator() {
             Row {
                 Column(modifier = Modifier.width(200.dp)) {
                     // Auctions
+                    
                 }
                 Column(modifier = Modifier.width(200.dp)) {
                     // 
