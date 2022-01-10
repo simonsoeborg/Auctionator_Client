@@ -10,12 +10,14 @@ import androidx.compose.ui.unit.dp
 @Preview
 fun Auctionator() {
 
+
+
     DesktopMaterialTheme {
         Column(modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f), horizontalAlignment = Alignment.CenterHorizontally) {
             Row {
                 Column(modifier = Modifier.width(200.dp)) {
                     // Auctions
-                    
+
                 }
                 Column(modifier = Modifier.width(200.dp)) {
                     // 
