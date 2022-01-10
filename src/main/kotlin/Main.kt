@@ -10,6 +10,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.runBlocking
 
 @Composable
 @Preview
@@ -28,6 +29,7 @@ fun App() {
 
 fun main() = application {
     // val userData = MutableStateFlow(UserData)
+    // runBlocking {  } i stedet for GlobalScope
 
     Window(onCloseRequest = ::exitApplication,
         title = "Auctionator Client",
