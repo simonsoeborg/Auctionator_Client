@@ -1,10 +1,8 @@
 import Factories.LoginItems
-import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,20 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerMoveFilter
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.sun.org.apache.xpath.internal.operations.Mod
 import navcontroller.NavController
-import java.awt.Color
-import java.util.*
-import kotlin.random.Random.Default.nextInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -50,45 +37,19 @@ fun AuctionatorScreen(navController: NavController) {
                 ) {
                     items(fillAuctionsWithDummyData()) { auction ->
                         Card (modifier = Modifier.padding(4.dp)) {
-                            if(onHover.value) {
                                 Text(
                                     text = auction.AuctionTitle + " | " + auction.AuctionPrice + " | " + auction.AmountOfBidders,
                                     modifier = Modifier.clickable {
                                         // todo
-                                    }.pointerMoveFilter(
-                                        onEnter = {
-                                            onHover.value = true
-                                            false
-                                        },
-                                        onExit = {
-                                            onHover.value = false
-                                            false
-                                        }
-                                    )
+                                    }.border(border = BorderStroke(1.dp, color = Color.Black))
                                 )
                             }
-                            Text(
-                                text = auction.AuctionTitle + " | " + auction.AuctionPrice + " | " + auction.AmountOfBidders,
-                                modifier = Modifier.clickable {
-                                    // todo
-                                }.pointerMoveFilter(
-                                    onEnter = {
-                                        onHover.value = true
-                                        false
-                                    },
-                                    onExit = {
-                                        onHover.value = false
-                                        false
-                                    }
-                                )
-                            )
                             // text = auction.AuctionTitle, textAlign = TextAlign.Center, style = TextStyle(fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             }
         }
-    }
 }
 
 fun fillAuctionsWithDummyData() : MutableList<auctionDummyData> {

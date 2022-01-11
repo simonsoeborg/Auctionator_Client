@@ -4,9 +4,9 @@ import org.jspace.ActualField
 import org.jspace.RemoteSpace
 
 
-class AuctionRepository_impl(var auctionPort: Int) : AuctionRepository {
+class AuctionRepository_impl(auctionPort: Int) : AuctionRepository {
 
-    var uri = "tcp://" + "85.204.194.92:9001" + "/lobby?keep/auction?" + auctionPort
+    var uri = "tcp://85.204.194.92:9001/lobby?keep/auction?$auctionPort"
     val auctionHandler = RemoteSpace(uri)
 
     override suspend fun createAuction(userName : String, itemName : String, price : Int, endDate : String, endTime : String, description : String) {
@@ -20,7 +20,8 @@ class AuctionRepository_impl(var auctionPort: Int) : AuctionRepository {
         )
     }
 
-    override suspend fun getAuction() {
+    override suspend fun getAuction() : Int {
+        return 0
     }
 
     override suspend fun placeBid() {
