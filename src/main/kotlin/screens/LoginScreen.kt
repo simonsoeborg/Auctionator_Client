@@ -1,3 +1,4 @@
+import Factories.LoginItems
 import model.UserData
 import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.desktop.ui.tooling.preview.Preview
@@ -11,12 +12,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import navcontroller.NavController
+import sun.rmi.runtime.Log
 
 @Composable
 @Preview
-fun LoginScreen (navController: NavController) {
+fun LoginScreen (navController: NavController) : UserData {
+    val userData = remember { mutableStateOf( UserData("null","DKK",false) )}
     var userName = remember { mutableStateOf("") }
     var userPass = remember { mutableStateOf("") }
 
@@ -24,7 +26,7 @@ fun LoginScreen (navController: NavController) {
     Column(modifier = Modifier.fillMaxWidth(1f).fillMaxHeight(1f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Greetings!", fontSize = 30.sp)
+                Text("Login form")
                 Row(modifier = Modifier.padding(10.dp)) {
                     TextField(
                         value = userName.value,
@@ -42,12 +44,17 @@ fun LoginScreen (navController: NavController) {
                     )
                 }*/
                 Button(onClick = {
-                    // update username in repo
+                    LoginItems.userName = userName.value
+                    LoginItems.userPass = userPass.value
+                    LoginItems.isLoggedIn = true
+
                     navController.navigate(Screen.AuctionatorScreen.name)
                 }) {
-                    Text("Lets go!")
+                    Text("Submit")
                 }
             }
         }
     }
+
+    return userData.value
 }
