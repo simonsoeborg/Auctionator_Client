@@ -1,6 +1,10 @@
 build
-.gradle
+.gradle*
 .idea
 /build/
 /.idea/
 /.gradle/
+.gradle/*
+*.lock
+*.bin
+*.kts

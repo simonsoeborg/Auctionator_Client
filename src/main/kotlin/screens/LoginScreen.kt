@@ -11,12 +11,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import navcontroller.NavController
 
 @Composable
 @Preview
-fun LoginScreen (navController: NavController) : UserData {
-    val userData = remember { mutableStateOf( UserData("null","DKK",false) )}
+fun LoginScreen (navController: NavController) {
     var userName = remember { mutableStateOf("") }
     var userPass = remember { mutableStateOf("") }
 
@@ -24,7 +24,7 @@ fun LoginScreen (navController: NavController) : UserData {
     Column(modifier = Modifier.fillMaxWidth(1f).fillMaxHeight(1f), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Login form")
+                Text("Greetings!", fontSize = 30.sp)
                 Row(modifier = Modifier.padding(10.dp)) {
                     TextField(
                         value = userName.value,
@@ -42,17 +42,12 @@ fun LoginScreen (navController: NavController) : UserData {
                     )
                 }*/
                 Button(onClick = {
-                    userData.value=userData.value.copy(
-                        isLoggedIn =  true,
-                        username = userName.value
-                    )
+                    // update username in repo
                     navController.navigate(Screen.AuctionatorScreen.name)
                 }) {
-                    Text("Submit")
+                    Text("Lets go!")
                 }
             }
         }
     }
-
-    return userData.value
 }
