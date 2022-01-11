@@ -1,3 +1,4 @@
+import Factories.LoginItems
 import model.UserData
 import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.desktop.ui.tooling.preview.Preview
@@ -12,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import navcontroller.NavController
+import sun.rmi.runtime.Log
 
 @Composable
 @Preview
@@ -42,10 +44,10 @@ fun LoginScreen (navController: NavController) : UserData {
                     )
                 }*/
                 Button(onClick = {
-                    userData.value=userData.value.copy(
-                        isLoggedIn =  true,
-                        username = userName.value
-                    )
+                    LoginItems.userName = userName.value
+                    LoginItems.userPass = userPass.value
+                    LoginItems.isLoggedIn = true
+
                     navController.navigate(Screen.AuctionatorScreen.name)
                 }) {
                     Text("Submit")

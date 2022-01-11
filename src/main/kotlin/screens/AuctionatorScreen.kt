@@ -1,3 +1,4 @@
+import Factories.LoginItems
 import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
@@ -23,12 +24,14 @@ fun AuctionatorScreen(navController: NavController) {
                     onClick = {
                         navController.navigate(Screen.LoginScreen.name)
                     }) {
-                    Text("Navigate to LoginScreen")
                 }
 
             }
             Column(modifier = Modifier.width(200.dp)) {
                 //
+                Text("Hej! " + LoginItems.userName)
+                Text("Status: " + LoginItems.isLoggedIn)
+                Text("Money: " + LoginItems.money)
             }
         }
     }
