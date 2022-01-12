@@ -33,7 +33,7 @@ fun LoginScreen (navController: NavController) {
                         label = { Text("Enter Username") },
                         placeholder = { Text("Username") }
                     )
-                }/*
+                }
                 Row(modifier = Modifier.padding(10.dp)) {
                     TextField(
                         value = userPass.value,
@@ -41,7 +41,7 @@ fun LoginScreen (navController: NavController) {
                         label = { Text("Enter Password") },
                         placeholder = { Text("Password") }
                     )
-                }*/
+                }
                 Button(onClick = {
                     LoginItems.userName = userName.value
                     LoginItems.userPass = userPass.value
