@@ -14,7 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import navcontroller.NavController
+import navigation.NavController
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -24,7 +24,7 @@ fun AuctionatorScreen(navController: NavController) {
     var onHover = remember { mutableStateOf(false) }
 
     if(LoginItems.isLoggedIn) {
-        currentAuctions(fillAuctionsWithDummyData())
+        currentAuctions(fillAuctionsWithDummyData(),navController)
     } else {
         Text("Not logged in")
     }
@@ -32,7 +32,10 @@ fun AuctionatorScreen(navController: NavController) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun currentAuctions(currentAuctions : List<auctionDummyData>){
+fun currentAuctions(
+    currentAuctions : List<auctionDummyData>,
+    navController: NavController
+){
     Column(
         modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -80,7 +83,10 @@ fun currentAuctions(currentAuctions : List<auctionDummyData>){
                     contentPadding = PaddingValues(8.dp)
                 ) {
                     items(currentAuctions) { auction ->
-                        Row(modifier = Modifier.clickable { println(auction.AuctionId) }) {
+                        Row(modifier = Modifier.clickable {
+                            println(auction.AuctionId)
+                            navController.navigate("Auction")
+                        }) {
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.6F)) {
                                 Text(
                                     text = auction.AuctionTitle,

@@ -1,4 +1,4 @@
-package screens
+package navigation
 
 import AuctionatorScreen
 import LoginScreen
@@ -9,14 +9,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import navcontroller.NavController
-import navcontroller.NavigationHost
-import navcontroller.composable
+import screens.AuctionScreen
+import screens.CreateAuctionScreen
 
 
 enum class Screen(
@@ -34,6 +34,10 @@ enum class Screen(
     CreateAuctionScreen(
         label = "Create",
         icon = Icons.Filled.Add
+    ),
+    AuctionScreen(
+        label = "Auction",
+        icon = Icons.Filled.Notifications
     )
 }
 
@@ -55,6 +59,11 @@ fun CustomNavigationHost(
             CreateAuctionScreen(navController)
         }
 
+        composable(Screen.AuctionScreen.name) {
+            // TODO: Figure out how to pass auctionId to AuctionScreen
+            AuctionScreen(1,upPress = { })
+        }
+
     }.build()
 }
 
@@ -72,7 +81,7 @@ fun NavigationRailSetup(
         /*modifier = Modifier.align(Alignment.CenterStart).fillMaxHeight()*/
     ) {
         screens.forEach {
-            if (it.label != "Login") {
+            if (it.label != "Login" && it.label != "Auction") {
                 NavigationRailItem(
                     selected = currentScreen == it.name,
                     icon = {
