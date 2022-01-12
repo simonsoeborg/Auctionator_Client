@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import navigation.NavController
+import navigation.Screen
 
 var auctions : MutableList<auctionDummyData> = mutableListOf<auctionDummyData>()
 
@@ -31,7 +32,7 @@ fun AuctionatorScreen(navController: NavController) {
         fillAuctionsWithDummyData()
     }
     if(LoginItems.isLoggedIn) {
-        currentAuctions()
+        currentAuctions(navController)
     } else {
         Column(
             modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
@@ -44,7 +45,7 @@ fun AuctionatorScreen(navController: NavController) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun currentAuctions(){
+fun currentAuctions(navController: NavController){
 
     Column(
         modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
@@ -95,7 +96,10 @@ fun currentAuctions(){
                     contentPadding = PaddingValues(8.dp)
                 ) {
                     items(auctions) { auction ->
-                        Row(modifier = Modifier.clickable { println(auction.AuctionId) }) {
+                        Row(modifier = Modifier.clickable {
+                            println(auction.AuctionId)
+                            navController.navigate(Screen.AuctionScreen.name)
+                        }) {
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.5F)) {
                                 Text(
                                     text = auction.AuctionTitle,
