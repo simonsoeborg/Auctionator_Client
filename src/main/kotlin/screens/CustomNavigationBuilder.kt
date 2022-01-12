@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
@@ -29,6 +30,10 @@ enum class Screen(
     LoginScreen(
         label = "Login",
         icon = Icons.Filled.Lock
+    ),
+    CreateAuctionScreen(
+        label = "Create",
+        icon = Icons.Filled.Add
     )
 }
 
@@ -44,6 +49,10 @@ fun CustomNavigationHost(
 
         composable(Screen.LoginScreen.name) {
             LoginScreen(navController)
+        }
+
+        composable(Screen.CreateAuctionScreen.name) {
+            CreateAuctionScreen(navController)
         }
 
     }.build()
@@ -63,22 +72,24 @@ fun NavigationRailSetup(
         /*modifier = Modifier.align(Alignment.CenterStart).fillMaxHeight()*/
     ) {
         screens.forEach {
-            NavigationRailItem(
-                selected = currentScreen == it.name,
-                icon = {
-                    Icon(
-                        imageVector = it.icon,
-                        contentDescription = it.label
-                    )
-                },
-                label = {
-                    Text(it.label)
-                },
-                alwaysShowLabel = false,
-                onClick = {
-                    navController.navigate(it.name)
-                }
-            )
+            if (it.label != "Login") {
+                NavigationRailItem(
+                    selected = currentScreen == it.name,
+                    icon = {
+                        Icon(
+                            imageVector = it.icon,
+                            contentDescription = it.label
+                        )
+                    },
+                    label = {
+                        Text(it.label)
+                    },
+                    alwaysShowLabel = false,
+                    onClick = {
+                        navController.navigate(it.name)
+                    }
+                )
+            }
         }
     }
 
