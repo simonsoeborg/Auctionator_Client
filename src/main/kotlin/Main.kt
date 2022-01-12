@@ -51,7 +51,7 @@ fun main() = application {
 
     Window(onCloseRequest = ::exitApplication,
         title = "Auctionator Client",
-        state = rememberWindowState(width = 800.dp, height = 600.dp),
+        state = rememberWindowState(width = 1000.dp, height = 600.dp),
         icon = icon
     ) {
         app()
