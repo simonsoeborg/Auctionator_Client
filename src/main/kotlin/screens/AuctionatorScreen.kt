@@ -3,8 +3,12 @@ import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
+import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,26 +20,32 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import navigation.NavController
 
+var auctions : MutableList<auctionDummyData> = mutableListOf<auctionDummyData>()
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview
 fun AuctionatorScreen(navController: NavController) {
 
-    var onHover = remember { mutableStateOf(false) }
-
+    if(auctions.size < 1) {
+        fillAuctionsWithDummyData()
+    }
     if(LoginItems.isLoggedIn) {
-        currentAuctions(fillAuctionsWithDummyData(),navController)
+        currentAuctions()
     } else {
-        Text("Not logged in")
+        Column(
+            modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Not logged in")
+        }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun currentAuctions(
-    currentAuctions : List<auctionDummyData>,
-    navController: NavController
-){
+fun currentAuctions(){
+
     Column(
         modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -59,7 +69,7 @@ fun currentAuctions(
             }
             Column(modifier = Modifier.width(600.dp)) {
                 Row {
-                    Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.6F)) {
+                    Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.5F)) {
                         Text(
                             text = "Title",
                             style = TextStyle(fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
@@ -77,17 +87,16 @@ fun currentAuctions(
                             style = TextStyle(fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                         )
                     }
+                    Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.1F)) {
+                    }
                 }
                 LazyVerticalGrid(
                     cells = GridCells.Fixed(1),
                     contentPadding = PaddingValues(8.dp)
                 ) {
-                    items(currentAuctions) { auction ->
-                        Row(modifier = Modifier.clickable {
-                            println(auction.AuctionId)
-                            navController.navigate("Auction")
-                        }) {
-                            Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.6F)) {
+                    items(auctions) { auction ->
+                        Row(modifier = Modifier.clickable { println(auction.AuctionId) }) {
+                            Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.5F)) {
                                 Text(
                                     text = auction.AuctionTitle,
                                 )
@@ -104,6 +113,14 @@ fun currentAuctions(
                                     style = TextStyle(textAlign = TextAlign.Center),
                                 )
                             }
+                            Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.1F)) {
+                                Button( onClick = {
+                                    removeItemFromAuctions(auction.AuctionId)
+                                } ) {
+                                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete")
+                                }
+                            }
+
                         }
                         // text = auction.AuctionTitle, textAlign = TextAlign.Center, style = TextStyle(fontWeight = FontWeight.Bold)
                     }
@@ -114,19 +131,26 @@ fun currentAuctions(
 }
 
 fun fillAuctionsWithDummyData() : MutableList<auctionDummyData> {
-    var auctions : MutableList<auctionDummyData> = mutableListOf<auctionDummyData>()
     auctions.add(auctionDummyData(1,"Norm architecs 'Flip around' for Menu", 6000, getRandomNumber()))
     auctions.add(auctionDummyData(2,"Poul Henningsen PH Sminkebord - mahogni", 30000, getRandomNumber()))
     auctions.add(auctionDummyData(3,"Knapsyet sofa med høj ryg", 4000, getRandomNumber() ))
     auctions.add(auctionDummyData(4,"Deszine Talks. Hyndesæt til 'Folkestolen', Børge Mogensen model J39. Sort læder. (2)", 1000, getRandomNumber() ))
     auctions.add(auctionDummyData(5," Hyndesæt til Børge Mogensens spisestol, model BM1 - sort læder (6)", 2800, getRandomNumber()))
     auctions.add(auctionDummyData(6,"Chronotech, damearmbåndsur, rustfrit stål", 1600, getRandomNumber() ))
-    auctions.add(auctionDummyData(7, "Menu. Fire skalstole, model 'Harbour' (4)", 4400, getRandomNumber() ))
-    auctions.add(auctionDummyData(8,"Jens Sinding Christensen, havneparti og vinterlandskab, olie på lærred (2)(cd)", 1000, getRandomNumber()))
-    auctions.add(auctionDummyData(9,"Grethe Meyer for Menu. Model GM 30. Pendel hvid", 1000, getRandomNumber() ))
-    auctions.add(auctionDummyData(10,"Thomas Bernstrand for Muuto. Studio Pendel, Grey.", 1000, getRandomNumber() ))
 
     return auctions
+}
+
+fun removeItemFromAuctions(itemId : Int) {
+    auctions.forEach {
+        if(it.AuctionId == itemId) {
+            auctions.remove(it)
+        }
+    }
+}
+
+fun addItemToAuctions(item : auctionDummyData) {
+    auctions.add(item)
 }
 
 fun getRandomNumber(): Int {
