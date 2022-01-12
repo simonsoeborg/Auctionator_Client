@@ -11,7 +11,7 @@ class AuctionBidController {
         var highestBid : Int = 0
         runBlocking {
             launch {
-                highestBid = AR.getAuction()
+                highestBid = AR.getHighestBid("TupleSpace / Auction / Bid?")
             }
         }
 
