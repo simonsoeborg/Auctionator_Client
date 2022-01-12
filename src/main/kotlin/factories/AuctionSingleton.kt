@@ -1,4 +1,4 @@
-package Factories
+package factories
 
 object HighestBidAuction {
     var highest : Int = 0

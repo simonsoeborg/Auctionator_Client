@@ -1,6 +1,6 @@
-package Controller
+package controller
 
-import Factories.HighestBidAuction
+import factories.HighestBidAuction
 import kotlinx.coroutines.*
 import repository.AuctionRepository_impl
 

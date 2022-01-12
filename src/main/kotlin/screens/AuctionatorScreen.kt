@@ -1,4 +1,4 @@
-import Factories.LoginItems
+import factories.LoginItems
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,80 +21,86 @@ import navcontroller.NavController
 fun AuctionatorScreen(navController: NavController) {
 
     var onHover = remember { mutableStateOf(false) }
+
     if(LoginItems.isLoggedIn) {
+        currentAuctions(fillAuctionsWithDummyData())
+    } else {
+        Text("Not logged in")
+    }
+}
 
-        Column(
-            modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row {
-                Column(modifier = Modifier.width(200.dp)) {
-                    // Auctions
-                    Text("Hej! " + LoginItems.userName)
-                    Text("Status: " + LoginItems.isLoggedIn)
-                    Text("Money: " + LoginItems.money)
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun currentAuctions(currentAuctions : List<auctionDummyData>){
+    Column(
+        modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row {
+            Column(modifier = Modifier.width(200.dp)) {
+                // Auctions
+                Text("Hej! " + LoginItems.userName)
+                Text("Status: " + LoginItems.isLoggedIn)
+                Text("Money: " + LoginItems.money)
 
-                }
-                Column(modifier = Modifier.width(600.dp)) {
-                    Row {
-                        Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.6F)) {
-                            Text(
-                                text = "Title",
-                                style = TextStyle(fontWeight = FontWeight.Bold)
-                            )
-                        }
-                        Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
-                            Text(
-                                text = "Price",
-                                style = TextStyle(fontWeight = FontWeight.Bold)
-                            )
-                        }
-                        Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
-                            Text(
-                                text = "Bidders",
-                                style = TextStyle(fontWeight = FontWeight.Bold)
-                            )
-                        }
+            }
+            Column(modifier = Modifier.width(600.dp)) {
+                Row {
+                    Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.6F)) {
+                        Text(
+                            text = "Title",
+                            style = TextStyle(fontWeight = FontWeight.Bold)
+                        )
                     }
-                    LazyVerticalGrid(
-                        cells = GridCells.Fixed(1),
-                        contentPadding = PaddingValues(8.dp)
-                    ) {
-                        items(fillAuctionsWithDummyData()) { auction ->
-                            Row {
-                                Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.6F)) {
-                                    Text(
-                                        text = auction.AuctionTitle,
-                                        modifier = Modifier.clickable {
-                                            // todo
-                                        }
-                                    )
-                                }
-                                Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
-                                    Text(
-                                        text = auction.AuctionPrice.toString() + " $",
-                                        modifier = Modifier.clickable {
-                                            // todo
-                                        }
-                                    )
-                                }
-                                Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
-                                    Text(
-                                        text = auction.AmountOfBidders.toString(),
-                                        modifier = Modifier.clickable {
-                                            // todo
-                                        }
-                                    )
-                                }
+                    Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
+                        Text(
+                            text = "Price",
+                            style = TextStyle(fontWeight = FontWeight.Bold)
+                        )
+                    }
+                    Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
+                        Text(
+                            text = "Bidders",
+                            style = TextStyle(fontWeight = FontWeight.Bold)
+                        )
+                    }
+                }
+                LazyVerticalGrid(
+                    cells = GridCells.Fixed(1),
+                    contentPadding = PaddingValues(8.dp)
+                ) {
+                    items(currentAuctions) { auction ->
+                        Row {
+                            Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.6F)) {
+                                Text(
+                                    text = auction.AuctionTitle,
+                                    modifier = Modifier.clickable {
+                                        // todo
+                                    }
+                                )
                             }
-                            // text = auction.AuctionTitle, textAlign = TextAlign.Center, style = TextStyle(fontWeight = FontWeight.Bold)
+                            Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
+                                Text(
+                                    text = auction.AuctionPrice.toString() + " $",
+                                    modifier = Modifier.clickable {
+                                        // todo
+                                    }
+                                )
+                            }
+                            Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
+                                Text(
+                                    text = auction.AmountOfBidders.toString(),
+                                    modifier = Modifier.clickable {
+                                        // todo
+                                    }
+                                )
+                            }
                         }
+                        // text = auction.AuctionTitle, textAlign = TextAlign.Center, style = TextStyle(fontWeight = FontWeight.Bold)
                     }
                 }
             }
         }
-    } else {
-        Text("Not logged in")
     }
 }
 

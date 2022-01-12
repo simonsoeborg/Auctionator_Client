@@ -18,24 +18,6 @@ import screens.NavigationRailSetup
 import screens.Screen
 import theme.AuctionatorTheme
 
-@ExperimentalMaterialApi
-@Composable
-@Preview
-fun app() {
-    val navController by rememberNavController(Screen.LoginScreen.name)
-
-    AuctionatorTheme {
-        Surface(
-            modifier = Modifier.background(color = MaterialTheme.colors.background)
-        ) {
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                NavigationRailSetup(navController)
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterialApi::class)
 fun main() = application {
@@ -56,6 +38,24 @@ fun main() = application {
     ) {
         app()
     }
+}
 
+@ExperimentalMaterialApi
+@Composable
+@Preview
+fun app() {
+    val navController by rememberNavController(Screen.LoginScreen.name)
+
+    AuctionatorTheme {
+        Surface(
+            modifier = Modifier.background(color = MaterialTheme.colors.background)
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                NavigationRailSetup(navController)
+            }
+        }
+    }
 }
 
