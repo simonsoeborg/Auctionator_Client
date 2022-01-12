@@ -11,13 +11,15 @@ class AuctionRepository_impl(auctionPort: Int) : AuctionRepository {
     var uri = "tcp://85.204.194.92:9001/auction?$auctionPort"
     val auctionHandler = RemoteSpace(uri)
 
-    override suspend fun createAuction(userName : String, itemName : String, price : Int, endDate : String, endTime : String) {
+    override suspend fun createAuction(aId : Int, userName : String, itemName : String, price : Int, endDate : String, endTime : String, imgURL : String) {
         auctionHandler.put(ActualField("create"),
+            ActualField(aId), // Auction Id
             ActualField(userName),  // Username
             ActualField(itemName),  // Itemname
             ActualField(price), // Start price
             ActualField(endDate),  // End-date
             ActualField(endTime),  // End-time
+            ActualField(imgURL),  // imgURL
         )
     }
 
