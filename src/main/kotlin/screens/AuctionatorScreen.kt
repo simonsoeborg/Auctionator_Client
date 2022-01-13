@@ -137,10 +137,10 @@ fun currentAuctions(navController: NavController){
 fun fillAuctionsWithDummyData() : MutableList<auctionDummyData> {
     auctions.add(auctionDummyData(1,"Norm architecs 'Flip around' for Menu", 6000, getRandomNumber()))
     auctions.add(auctionDummyData(2,"Poul Henningsen PH Sminkebord - mahogni", 30000, getRandomNumber()))
-    auctions.add(auctionDummyData(3,"Knapsyet sofa med høj ryg", 4000, getRandomNumber() ))
+    auctions.add(auctionDummyData(3,"Knapsyet sofa med høj ryg", 4000, getRandomNumber()))
     auctions.add(auctionDummyData(4,"Deszine Talks. Hyndesæt til 'Folkestolen', Børge Mogensen model J39. Sort læder. (2)", 1000, getRandomNumber() ))
     auctions.add(auctionDummyData(5," Hyndesæt til Børge Mogensens spisestol, model BM1 - sort læder (6)", 2800, getRandomNumber()))
-    auctions.add(auctionDummyData(6,"Chronotech, damearmbåndsur, rustfrit stål", 1600, getRandomNumber() ))
+    auctions.add(auctionDummyData(6,"Chronotech, damearmbåndsur, rustfrit stål", 1600, getRandomNumber()))
 
     return auctions
 }
