@@ -12,9 +12,6 @@ import androidx.compose.ui.window.Tray
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import navigation.NavigationRailSetup
 import navigation.Screen
 import navigation.rememberNavController
@@ -31,14 +28,25 @@ fun main() = application {
     val rs = RemoteSpace(uri)
 
     rs.put(
-        ActualField("create"),
-        ActualField("Simon"),
-        ActualField("EDB Maskine"),
-        ActualField("1000"),
-        ActualField("13:02"),
-        ActualField("En Computer")
+        "create",
+        "Simon",
+        "EDB Maskine",
+        "1000",
+        "13:02",
+        "En Computer"
     )
 
+    val response = rs.get(
+        ActualField("auctionURI"),
+        ActualField("Simon"),
+        FormalField(String::class.java),
+        FormalField(String::class.java)
+    )
+    if (response != null){
+        println("Det virker")
+    }
+
+    /*
     rs.put(
         ActualField("create"),
         ActualField("Simon"),
@@ -47,6 +55,8 @@ fun main() = application {
         ActualField("13:02"),
         ActualField("En Ovn")
     )
+    */
+
 
     val icon = painterResource("aLogo.png")
 
