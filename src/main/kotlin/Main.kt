@@ -12,15 +12,42 @@ import androidx.compose.ui.window.Tray
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import navigation.NavigationRailSetup
 import navigation.Screen
 import navigation.rememberNavController
+import org.jspace.ActualField
+import org.jspace.FormalField
+import org.jspace.RemoteSpace
 import theme.AuctionatorTheme
 
 
 @OptIn(ExperimentalMaterialApi::class)
 fun main() = application {
     // runBlocking {  } i stedet for GlobalScope
+    val uri = "tcp://127.0.0.1:9001/lobby?keep"
+    val rs = RemoteSpace(uri)
+
+    rs.put(
+        ActualField("create"),
+        ActualField("Simon"),
+        ActualField("EDB Maskine"),
+        ActualField("1000"),
+        ActualField("13:02"),
+        ActualField("En Computer")
+    )
+
+    rs.put(
+        ActualField("create"),
+        ActualField("Simon"),
+        ActualField("Samsung Ovn"),
+        ActualField("4000"),
+        ActualField("13:02"),
+        ActualField("En Ovn")
+    )
+
     val icon = painterResource("aLogo.png")
 
     Tray(
