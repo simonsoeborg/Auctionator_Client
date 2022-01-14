@@ -60,6 +60,7 @@ import java.math.BigDecimal
 import java.text.NumberFormat
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.random.Random
 
 private val BottomBarHeight = 56.dp
 private val TitleHeight = 128.dp
@@ -77,7 +78,10 @@ fun AuctionScreen(
     auctionId: Int,
     upPress: () -> Unit
 ) {
+    // val thisAuction = LiveA
     val auction = remember() { auctionDummyData(auctionId,"Georg Jensen Stol",5000,39) }
+    val (auctionTitle, setAuctionTitle) = remember { mutableStateOf(Random.Default) }
+
 
     Box(Modifier.fillMaxSize()) {
         val scroll = rememberScrollState(0)
