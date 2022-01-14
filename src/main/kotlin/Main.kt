@@ -24,6 +24,7 @@ import theme.AuctionatorTheme
 @OptIn(ExperimentalMaterialApi::class)
 fun main() = application {
     // runBlocking {  } i stedet for GlobalScope
+    /*
     val uri = "tcp://127.0.0.1:9001/lobby?keep"
     val rs = RemoteSpace(uri)
 
@@ -45,18 +46,7 @@ fun main() = application {
     if (response != null){
         println("Det virker")
     }
-
-    /*
-    rs.put(
-        ActualField("create"),
-        ActualField("Simon"),
-        ActualField("Samsung Ovn"),
-        ActualField("4000"),
-        ActualField("13:02"),
-        ActualField("En Ovn")
-    )
-    */
-
+     */
 
     val icon = painterResource("aLogo.png")
 
@@ -66,6 +56,7 @@ fun main() = application {
             Item("Quit App", onClick = ::exitApplication)
         }
     )
+
 
     Window(onCloseRequest = ::exitApplication,
         title = "Auctionator Client",
