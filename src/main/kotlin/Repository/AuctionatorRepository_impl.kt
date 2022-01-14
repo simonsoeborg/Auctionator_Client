@@ -1,20 +1,13 @@
 package repository
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import kotlinx.coroutines.Job
+import factories.ConnectionSingleton
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.jspace.ActualField
 import org.jspace.FormalField
-import org.jspace.RemoteSpace
 
 
 class AuctionatorRepository_impl : AuctionatorRepository {
-
-    private val uri = "tcp://127.0.0.1:9001/lobby?keep"
-    private val rs = RemoteSpace(uri)
 
     override suspend fun createAuction(
         userName: String,
@@ -26,7 +19,7 @@ class AuctionatorRepository_impl : AuctionatorRepository {
 
 
          MainScope().launch {
-            rs.put(
+            ConnectionSingleton.rs.put(
                 "create",
                 userName,
                 itemName,
@@ -36,8 +29,7 @@ class AuctionatorRepository_impl : AuctionatorRepository {
             )
         }
 
-
-        return rs.get(
+        return ConnectionSingleton.rs.get(
             ActualField("auctionURI"),
             ActualField(userName),
             FormalField(String::class.java),
@@ -45,16 +37,8 @@ class AuctionatorRepository_impl : AuctionatorRepository {
         ).toString()
     }
 
-    override suspend fun getAuction(variant : String) : Any {
-        return rs.queryp(ActualField(variant))[0]
-    }
-
-    override suspend fun getHighestBid(variant: String): Int {
-        val temp = rs.queryp(ActualField(variant))[1]
-        return temp.toString().toInt()
-    }
-
-    override suspend fun placeBid() {
+    override suspend fun getAuction(auctionId : String) : String {
+        return ConnectionSingleton.rs.queryp(ActualField(auctionId)).toString()
     }
 
     override suspend fun getAllAuctions() {
