@@ -61,7 +61,7 @@ fun CustomNavigationHost(
 
         composable(Screen.AuctionScreen.name) {
             // TODO: Figure out how to pass auctionId to AuctionScreen
-            // AuctionScreen(1, )
+            AuctionScreen(navController)
         }
 
     }.build()
