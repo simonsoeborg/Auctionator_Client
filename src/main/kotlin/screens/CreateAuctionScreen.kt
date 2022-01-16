@@ -1,6 +1,7 @@
 package screens
 
 import addItemToAuctions
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
@@ -21,6 +22,7 @@ import navigation.NavController
 import navigation.Screen
 
 @Composable
+@Preview
 fun CreateAuctionScreen(navController: NavController) {
     var auctionTitle = remember { mutableStateOf("") }
     var auctionURL = remember { mutableStateOf("") }
@@ -31,7 +33,7 @@ fun CreateAuctionScreen(navController: NavController) {
         modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f).padding(40.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(modifier = Modifier.padding(20.dp)) {
+        Row(modifier = Modifier.padding(20.dp), ) {
             Text("Create new Auction", fontSize = 30.sp)
         }
         Row(modifier = Modifier.padding(5.dp)) {

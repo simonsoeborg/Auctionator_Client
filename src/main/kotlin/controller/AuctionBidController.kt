@@ -1,7 +1,6 @@
 package controller
 
 import Repository.LiveAuctionRepository_impl
-import factories.HighestBidAuction
 import kotlinx.coroutines.*
 import model.JoinAuctionData
 

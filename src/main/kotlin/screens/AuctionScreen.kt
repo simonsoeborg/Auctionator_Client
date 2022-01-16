@@ -16,6 +16,7 @@
 
 package screens
 
+import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -74,6 +75,7 @@ private val CollapsedImageSize = 150.dp
 private val HzPadding = Modifier.padding(horizontal = 24.dp)
 
 @Composable
+@Preview
 fun AuctionScreen(
     auctionId: Int,
     upPress: () -> Unit
