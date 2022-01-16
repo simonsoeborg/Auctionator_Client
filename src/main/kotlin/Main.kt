@@ -20,31 +20,6 @@ import theme.AuctionatorTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 fun main() = application {
-    // runBlocking {  } i stedet for GlobalScope
-    /*
-    val uri = "tcp://127.0.0.1:9001/lobby?keep"
-    val rs = RemoteSpace(uri)
-
-    rs.put(
-        "create",
-        "Simon",
-        "EDB Maskine",
-        "1000",
-        "13:02",
-        "En Computer"
-    )
-
-    val response = rs.get(
-        ActualField("auctionURI"),
-        ActualField("Simon"),
-        FormalField(String::class.java),
-        FormalField(String::class.java)
-    )
-    if (response != null){
-        println("Det virker")
-    }
-     */
-
     val icon = painterResource("aLogo.png")
 
     Tray(

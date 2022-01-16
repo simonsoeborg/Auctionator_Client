@@ -1,10 +1,12 @@
 package model
 
-data class JoinAuctionData (
+data class SpecificAuctionData (
     var auctionURI : String,
-    val auctionTitle : String,
+    var auctionTitle : String,
     val auctionPrice : String,
     val auctionHighestBid : String,
     val auctionTimeRemaining : String,
+    val auctionDescription : String,
+    val auctionImageURL : String,
     val userName : String
 )
