@@ -1,10 +1,10 @@
 package Repository
 
-import model.JoinAuctionData
+import kotlinx.coroutines.flow.Flow
+import model.SpecificAuctionData
 
 interface LiveAuctionRepository {
     suspend fun joinAuction(auctionURI : String)
-    suspend fun getAuctionDetails(auctionURI: String) : JoinAuctionData
-    suspend fun getHighestBid(auctionData: JoinAuctionData) : Int
-    suspend fun sendBid(auctionData: JoinAuctionData, newHighestBid: Int)
+    suspend fun getSpecificAuctionData(auctionURI: String) : Flow<SpecificAuctionData>
+    suspend fun sendBid(auctionData: SpecificAuctionData, newHighestBid: Int)
 }
