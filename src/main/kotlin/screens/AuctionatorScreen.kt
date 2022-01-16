@@ -113,7 +113,7 @@ fun currentAuctions(navController: NavController){
                             }
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
                                 Text(
-                                    text = auction.AmountOfBidders.toString(),
+                                    text = auction.TimeRemaining.toString(),
                                     style = TextStyle(textAlign = TextAlign.Center),
                                 )
                             }
@@ -166,5 +166,5 @@ data class auctionDummyData (
     val AuctionId : Int,
     val AuctionTitle : String,
     val AuctionPrice : Int,
-    val AmountOfBidders : Int
+    val TimeRemaining : Int
 )
