@@ -206,7 +206,7 @@ private fun Title(auction: auctionDummyData, scroll: Int) {
             modifier = HzPadding
         )
         Text(
-            text = "Bidders: " + auction.AmountOfBidders.toString(),
+            text = "Bidders: " + auction.TimeRemaining.toString(),
             style = MaterialTheme.typography.subtitle2,
             fontSize = 20.sp,
             color = Color(24, 25, 29),
