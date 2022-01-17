@@ -1,6 +1,5 @@
 package screens
 
-import addItemToAuctions
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,15 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import auctionDummyData
-import auctions
+import controller.MainController
 import factories.LoginItems
 import navigation.NavController
 import navigation.Screen
 
 @Composable
 @Preview
-fun CreateAuctionScreen(navController: NavController) {
+fun CreateAuctionScreen(navController: NavController, mainController: MainController) {
     var auctionTitle = remember { mutableStateOf("") }
     var auctionURL = remember { mutableStateOf("") }
     var auctionPrice = remember { mutableStateOf(0) }
@@ -81,7 +79,7 @@ fun CreateAuctionScreen(navController: NavController) {
         }
         Row(modifier = Modifier.padding(5.dp)) {
             Button(onClick = {
-                addItemToAuctions(auctionDummyData(auctions.size+1, auctionTitle.value, auctionPrice.value, auctionTime.value))
+                // addItemToAuctions(auctionDummyData(auctions.size+1, auctionTitle.value, auctionPrice.value, auctionTime.value))
                 navController.navigate(Screen.AuctionatorScreen.name)
             }
             ) {

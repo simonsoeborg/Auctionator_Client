@@ -3,6 +3,7 @@ package repository
 import factories.ConnectionSingleton
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import model.AuctionData
@@ -40,31 +41,72 @@ class AuctionatorRepository_impl : AuctionatorRepository {
         ).toString()
     }
 
-    override suspend fun getAuction(auctionId : String) : String {
-        return ConnectionSingleton.rs.queryp(ActualField(auctionId)).toString()
+    override suspend fun getAuction() : Flow<AuctionData> = flow  {
+        ConnectionSingleton.rs.query(
+            ActualField("auction"), // auction
+            FormalField(String::class.java), // Id
+            FormalField(String::class.java), // Title
+            FormalField(String::class.java), // EndTime
+            FormalField(String::class.java), // Price
+            FormalField(String::class.java) // Uri
+        ).map {
+            val temp = AuctionData(
+                auctionId = it.toString(),
+                auctionTitle = it.toString(),
+                auctionEndTime = it.toString(),
+                auctionPrice = it.toString(),
+                auctionURI = it.toString()
+            )
+
+            emit(temp)
+        }
     }
 
-    override suspend fun getAllAuctions() : Flow<List<AuctionData>> = flow {
-        val response = ConnectionSingleton.rs.queryAll(
-            ActualField("create"), // Kan ikke huske, hvad disse vil hedde
+    override fun getAllAuctions() : Flow<AuctionData> = flow {
+
+        ConnectionSingleton.rs.queryAll(
+            ActualField("auction"), // auction
+            FormalField(String::class.java), // Id
             FormalField(String::class.java), // Title
-            FormalField(String::class.java), // Amount of Bidders
+            FormalField(String::class.java), // EndTime
             FormalField(String::class.java), // Price
+            FormalField(String::class.java) // Uri
+        ).map {
+            val temp = AuctionData(
+                auctionId = it[1].toString(),
+                auctionTitle = it[2].toString(),
+                auctionEndTime = it[3].toString(),
+                auctionPrice = it[4].toString(),
+                auctionURI = it[5].toString()
+            )
+
+            emit(temp)
+        }
+    }
+
+    override fun getAllAuctionsOld() : Flow<List<AuctionData>> = flow {
+        val response = ConnectionSingleton.rs.queryAll(
+            ActualField("auction"), // auction
+            FormalField(String::class.java), // Id
+            FormalField(String::class.java), // Title
+            FormalField(String::class.java), // EndTime
+            FormalField(String::class.java), // Price
+            FormalField(String::class.java) // Uri
         )
 
         val auctionList = mutableListOf<AuctionData>()
 
-        response.forEach{
+        response.map{
             auctionList.add(
                 AuctionData(
-                    auctionTitle = it[0].toString(),
-                    auctionAmountOfBidders = it[1].toString(),
-                    auctionPrice = it[2].toString()
+                    auctionId = it[1].toString(),
+                    auctionTitle = it[2].toString(),
+                    auctionEndTime = it[3].toString(),
+                    auctionPrice = it[4].toString(),
+                    auctionURI = it[5].toString()
                 )
             )
+            emit(auctionList)
         }
-
-        emit(auctionList)
     }
-
 }

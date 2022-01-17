@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import controller.MainController
 import screens.AuctionScreen
 import screens.CreateAuctionScreen
 
@@ -44,24 +45,25 @@ enum class Screen(
 
 @Composable
 fun CustomNavigationHost(
-    navController: NavController
+    navController: NavController,
+    mainController: MainController
 ) {
     NavigationHost(navController) {
         composable(Screen.AuctionatorScreen.name) {
-            AuctionatorScreen(navController)
+            AuctionatorScreen(navController, mainController)
         }
 
         composable(Screen.LoginScreen.name) {
-            LoginScreen(navController)
+            LoginScreen(navController, mainController)
         }
 
         composable(Screen.CreateAuctionScreen.name) {
-            CreateAuctionScreen(navController)
+            CreateAuctionScreen(navController, mainController)
         }
 
         composable(Screen.AuctionScreen.name) {
             // TODO: Figure out how to pass auctionId to AuctionScreen
-            AuctionScreen(navController)
+            AuctionScreen(navController, mainController)
         }
 
     }.build()
@@ -70,7 +72,8 @@ fun CustomNavigationHost(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NavigationRailSetup(
-    navController: NavController
+    navController: NavController,
+    mainController: MainController
 ) {
     val screens = Screen.values().toList()
     val currentScreen by remember {
@@ -105,6 +108,6 @@ fun NavigationRailSetup(
     Box(
         modifier = Modifier.fillMaxHeight()
     ) {
-        CustomNavigationHost(navController = navController)
+        CustomNavigationHost(navController = navController, mainController)
     }
 }

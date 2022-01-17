@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.unit.Density
+import controller.MainController
 import factories.LoginItems.userName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -36,7 +37,7 @@ import java.net.URL
 
 
 @Composable
-fun AuctionScreen(navController: NavController){
+fun AuctionScreen(navController: NavController, mainController: MainController){
     DesktopMaterialTheme {
         Column(
             modifier = Modifier.fillMaxHeight().fillMaxWidth(),
