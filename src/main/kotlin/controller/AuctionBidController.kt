@@ -1,9 +1,5 @@
 package controller
 
-import Repository.LiveAuctionRepository_impl
-import kotlinx.coroutines.*
-import model.SpecificAuctionData
-
 class AuctionBidController {
 
 //    suspend fun getHighestBid(auctionData: SpecificAuctionData) : Int {

@@ -1,6 +1,6 @@
 package factories
 
-import Repository.LiveAuctionRepository_impl
+import repository.LiveAuctionRepository_impl
 import repository.AuctionatorRepository_impl
 
 object HighestBidAuction {
@@ -9,9 +9,9 @@ object HighestBidAuction {
 }
 
 object AuctionSingleton {
-    lateinit var instance : AuctionatorRepository_impl
+    var instance = AuctionatorRepository_impl()
 }
 
 object LiveAuctionSingleton {
-    lateinit var instance : LiveAuctionRepository_impl
+    var instance = LiveAuctionRepository_impl()
 }

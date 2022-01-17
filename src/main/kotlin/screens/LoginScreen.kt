@@ -11,12 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import controller.MainController
 import navigation.NavController
 import navigation.Screen
 
 @Composable
 @Preview
-fun LoginScreen (navController: NavController) {
+fun LoginScreen (navController: NavController, mainController: MainController) {
 
     var userName = remember { mutableStateOf("Human") }
     var userPass = remember { mutableStateOf("") }
