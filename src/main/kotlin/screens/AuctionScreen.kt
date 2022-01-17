@@ -45,6 +45,9 @@ fun AuctionScreen(navController: NavController, mainController: MainController){
                 getAuctionTitle(mainController.currentAuction.value.auctionTitle)
             }
             Row {
+                getAuctionDescription(mainController.currentAuction.value.auctionDescription)
+            }
+            Row {
                 currentBidAndPrice(mainController.currentAuction.value.auctionHighestBid, mainController.currentAuction.value.auctionPrice)
             }
             Row { enterBid() }
@@ -54,7 +57,7 @@ fun AuctionScreen(navController: NavController, mainController: MainController){
 @Composable
 fun AmountOfbidders() {
     // Todo - Server needs to keep track of this?
-    var Bidders = remember { mutableStateOf(0) }
+    val Bidders = remember { mutableStateOf(0) }
     Column(
         modifier = Modifier.fillMaxWidth().padding(3.dp),
         horizontalAlignment = Alignment.End
@@ -126,11 +129,24 @@ fun getAuctionTitle(auctionTitle: String) {
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(modifier = Modifier.padding(20.dp)) {
+        Row(modifier = Modifier.padding(15.dp)) {
             Text(auctionTitle, fontSize = 30.sp)
         }
     }
 }
+
+@Composable
+fun getAuctionDescription(description: String) {
+    Column(
+        modifier = Modifier.fillMaxWidth(.25f).padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(modifier = Modifier.padding(bottom = 10.dp)) {
+            Text(description, fontSize = 12.sp)
+        }
+    }
+}
+
 
 @Composable
 fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
@@ -158,7 +174,7 @@ fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
 
 @Composable
 fun enterBid (){
-    var userBid = remember { mutableStateOf(0) }
+    val userBid = remember { mutableStateOf(0) }
     Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
         TextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

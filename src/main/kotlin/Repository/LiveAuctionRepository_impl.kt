@@ -23,15 +23,15 @@ class LiveAuctionRepository_impl : LiveAuctionRepository {
 
     override suspend fun getSpecificAuctionData() : Flow<SpecificAuctionData> = flow {
         val response = currentAuctionSpace.query(
-            ActualField("initialdata"),
-            ActualField(LoginItems.userName),
-            FormalField(String::class.java), // Title
-            FormalField(String::class.java), // Price
-            FormalField(String::class.java), // HighestBid
-            FormalField(String::class.java), // auctionTimeRemaining
-            FormalField(String::class.java), // Description
-            FormalField(String::class.java), // ImageURL
-            FormalField(String::class.java)  // UserName
+            ActualField("initialdata"), //0
+            ActualField(LoginItems.userName),//1
+            FormalField(String::class.java), //2 Title
+            FormalField(String::class.java), //3 Price
+            FormalField(String::class.java), //4 HighestBid
+            FormalField(String::class.java), //5 auctionTimeRemaining
+            FormalField(String::class.java), //6 Description
+            FormalField(String::class.java), //7 ImageURL
+            FormalField(String::class.java)  //8 UserName
         )
 
         val auctionDataObj = SpecificAuctionData(
@@ -44,6 +44,8 @@ class LiveAuctionRepository_impl : LiveAuctionRepository {
             auctionImageURL = response[7].toString(),
             userName = response[8].toString()
         )
+        println("-------------------------" +response[6].toString())
+        println("-------------------------" +response[2].toString())
 
         emit(auctionDataObj)
     }
