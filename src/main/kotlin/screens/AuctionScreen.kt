@@ -4,11 +4,14 @@ import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.layout.ContentScale
@@ -27,6 +30,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.unit.Density
 import controller.MainController
+import factories.LoginItems
 import factories.LoginItems.userName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -136,6 +140,8 @@ fun GetBidName(auctionTitle: String) {
         }
     }
 }
+
+
 @Composable
 fun MakingABid() {
     var userBid = remember { mutableStateOf(0) }
@@ -143,18 +149,33 @@ fun MakingABid() {
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(modifier = Modifier.padding(5.dp)) {
+        Row(modifier = Modifier.padding(5.dp)
+        ) {
             Text("higest bidder is " + userName + " with the current Bid: " + userBid.value.toString(), fontSize = 15.sp)
         }
 
-        Row(modifier = Modifier.padding(10.dp)) {
+        Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
             TextField(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 value = userBid.value.toString(),
                 onValueChange = { userBid.value = it.toInt()},
                 label = { Text("Enter bid") },
-                placeholder = { Text("bid") }
+                placeholder = { Text("bid") },
             )
+
+
+            TextButton(onClick = {
+                if (userBid.value <= LoginItems.money){
+                    // Todo Make bid
+                    println("you bid have now been send: you bidded "+ userBid.value)
+                }
+                else { println("You do not have enough money: "+ userBid.value + " is higher than your current saldo: "+ LoginItems.money)
+                }
+
+            }, colors = ButtonDefaults.textButtonColors(backgroundColor = Color(0xFF55aaaa)), modifier = Modifier.padding(start = 20.dp)){
+                Text("Send bid", color = Color.White)
+            }
         }
+
     }
 }
