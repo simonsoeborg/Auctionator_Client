@@ -1,6 +1,5 @@
 package screens
 
-import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,29 +12,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.loadSvgPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.loadImageBitmap
-import androidx.compose.ui.unit.Density
 import controller.MainController
 import factories.LoginItems
-import factories.LoginItems.userName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import navigation.NavController
-import java.io.File
 import java.io.IOException
 import java.net.URL
 
@@ -48,22 +36,24 @@ fun AuctionScreen(navController: NavController, mainController: MainController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row {
-                ConnectingBidders()
+                AmountOfbidders()
             }
             Row {
                 GetItemImage(mainController.currentAuction.value.auctionImageURL)
             }
             Row {
-                GetBidName(mainController.currentAuction.value.auctionTitle)
+                getAuctionTitle(mainController.currentAuction.value.auctionTitle)
             }
             Row {
-                MakingABid(mainController.currentAuction.value.auctionHighestBid)
+                currentBidAndPrice(mainController.currentAuction.value.auctionHighestBid, mainController.currentAuction.value.auctionPrice)
             }
+            Row { enterBid() }
         }
 }
 
 @Composable
-fun ConnectingBidders() {
+fun AmountOfbidders() {
+    // Todo - Server needs to keep track of this?
     var Bidders = remember { mutableStateOf(0) }
     Column(
         modifier = Modifier.fillMaxWidth().padding(3.dp),
@@ -91,8 +81,8 @@ fun GetItemImage(url: String) {
             modifier = Modifier.width(200.dp)
         )
     }
-
 }
+
 @Composable
 fun <T> AsyncImage(
     load: suspend () -> T,
@@ -123,6 +113,7 @@ fun <T> AsyncImage(
         )
     }
 }
+
 fun loadImageBitmap(url: String): ImageBitmap =
     URL(url).openStream().buffered().use(::loadImageBitmap)
 
@@ -130,7 +121,7 @@ fun loadImageBitmap(url: String): ImageBitmap =
 //----------------------------------------------------------------------------------------------------------------------
 
 @Composable
-fun GetBidName(auctionTitle: String) {
+fun getAuctionTitle(auctionTitle: String) {
     Column(
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -141,40 +132,52 @@ fun GetBidName(auctionTitle: String) {
     }
 }
 
-
 @Composable
-fun MakingABid(highestBid: String) {
-    var userBid = remember { mutableStateOf(0) }
+fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
     Column(
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(modifier = Modifier.padding(5.dp)
-        ) {
-            Text("The current highest bid is $highestBid", fontSize = 15.sp)
+        Row {
+            Text("The starting price is ", fontSize = 15.sp, modifier = Modifier.padding(bottom = 25.dp))
+            Text("$minimumPrice $", color = Color(0xFF55aaaa), modifier = Modifier.padding(bottom = 25.dp))
         }
-
-        Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
-            TextField(
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                value = userBid.value.toString(),
-                onValueChange = { userBid.value = it.toInt()},
-                label = { Text("Enter bid") },
-                placeholder = { Text("bid") },
-            )
-
-            TextButton(onClick = {
-                if (userBid.value <= LoginItems.money){
-                    // Todo Make bid
-                    println("you bid have now been send: you bidded "+ userBid.value)
-                }
-                else { println("You do not have enough money: "+ userBid.value + " is higher than your current saldo: "+ LoginItems.money)
-                }
-
-            }, colors = ButtonDefaults.textButtonColors(backgroundColor = Color(0xFF55aaaa)), modifier = Modifier.padding(start = 20.dp)){
-                Text("Send bid", color = Color.White)
+        if (highestBid.toInt()==1){
+            Row {
+                Text("There is currently")
+                Text(" NO ", color = Color.Red)
+                Text("bids on this item")
             }
         }
+        else
+            Row { Text("The current highest bid is ", fontSize = 15.sp)
+            Text("$highestBid $", fontSize = 15.sp, color = Color.Green)
+            }
+    }
+}
 
+@Composable
+fun enterBid (){
+    var userBid = remember { mutableStateOf(0) }
+    Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+        TextField(
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            value = userBid.value.toString(),
+            onValueChange = { userBid.value = it.toInt()},
+            label = { Text("Enter bid") },
+            placeholder = { Text("bid") },
+        )
+
+        TextButton(onClick = {
+            if (userBid.value <= LoginItems.money){
+                // Send bid
+                println("you bid have now been send: you bidded "+ userBid.value)
+            }
+            else { println("You do not have enough money: "+ userBid.value + " is higher than your current saldo: "+ LoginItems.money)
+            }
+
+        }, colors = ButtonDefaults.textButtonColors(backgroundColor = Color(0xFF55aaaa)), modifier = Modifier.padding(start = 20.dp)){
+            Text("Send bid", color = Color.White)
+        }
     }
 }
