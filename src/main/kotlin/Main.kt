@@ -12,6 +12,7 @@ import androidx.compose.ui.window.Tray
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import controller.MainController
 import navigation.NavigationRailSetup
 import navigation.Screen
 import navigation.rememberNavController
@@ -32,7 +33,7 @@ fun main() = application {
 
     Window(onCloseRequest = ::exitApplication,
         title = "Auctionator Client",
-        state = rememberWindowState(width = 1000.dp, height = 600.dp),
+        state = rememberWindowState(width = 1400.dp, height = 1000.dp),
         icon = icon
     ) {
         app()
@@ -44,7 +45,7 @@ fun main() = application {
 @Preview
 fun app() {
     val navController by rememberNavController(Screen.LoginScreen.name)
-
+    val mainController = MainController()
     AuctionatorTheme {
         Surface(
             modifier = Modifier.background(color = MaterialTheme.colors.background)
@@ -52,9 +53,10 @@ fun app() {
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-                NavigationRailSetup(navController)
+                NavigationRailSetup(navController, mainController)
             }
         }
     }
+
 }
 
