@@ -10,7 +10,7 @@ import org.jspace.RemoteSpace
 
 class LiveAuctionRepository_impl : LiveAuctionRepository {
 
-    private val currentAuctionSpace: RemoteSpace = RemoteSpace("tcp://127.0.0.1:9001/lobby?keep")
+    private var currentAuctionSpace: RemoteSpace = RemoteSpace("tcp://127.0.0.1:9001/lobby?keep")
     private var currentAuctionSpaceURI: String = "tcp://127.0.0.1:9001/lobby?keep"
     override suspend fun joinAuction(auctionURI: String) {
         currentAuctionSpaceURI = auctionURI
@@ -52,8 +52,8 @@ class LiveAuctionRepository_impl : LiveAuctionRepository {
         currentAuctionSpace.put("bid",bid,LoginItems.userName)
     }
 
-    fun setCurrentAuctionSpace(uri: String) : RemoteSpace {
+    private fun setCurrentAuctionSpace(uri: String) {
         println("Connecting to RemoteSpace $uri...")
-        return RemoteSpace(uri)
+        currentAuctionSpace =  RemoteSpace(uri)
     }
 }

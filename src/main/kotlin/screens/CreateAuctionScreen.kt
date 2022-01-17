@@ -26,10 +26,10 @@ import navigation.Screen
 @Preview
 fun CreateAuctionScreen(navController: NavController, mainController: MainController) {
     val auctionTitle = remember { mutableStateOf("") }
-    var auctionPrice = remember { mutableStateOf(0) }
-    var auctionTime = remember { mutableStateOf(0) }
-    var imageUrl = remember { mutableStateOf(" ") }
-    var description = remember { mutableStateOf(" ") }
+    val auctionPrice = remember { mutableStateOf(0) }
+    val auctionTime = remember { mutableStateOf(0) }
+    val imageUrl = remember { mutableStateOf(" ") }
+    val description = remember { mutableStateOf(" ") }
 
     Column(
         modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f).padding(40.dp),
