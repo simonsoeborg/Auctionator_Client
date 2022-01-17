@@ -8,10 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Tray
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.application
-import androidx.compose.ui.window.rememberWindowState
+import androidx.compose.ui.window.*
 import controller.MainController
 import navigation.NavigationRailSetup
 import navigation.Screen
@@ -33,7 +30,7 @@ fun main() = application {
 
     Window(onCloseRequest = ::exitApplication,
         title = "Auctionator Client",
-        state = rememberWindowState(width = 1400.dp, height = 1000.dp),
+        state = rememberWindowState(width = 1400.dp, height = 1000.dp, placement = WindowPlacement.Maximized),
         icon = icon
     ) {
         app()

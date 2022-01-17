@@ -8,3 +8,4 @@ build
 *.lock
 *.bin
 *.kts
+.gradle
