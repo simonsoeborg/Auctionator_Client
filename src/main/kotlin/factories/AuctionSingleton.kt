@@ -1,6 +1,6 @@
 package factories
 
-import Repository.LiveAuctionRepository_impl
+import repository.LiveAuctionRepository_impl
 import repository.AuctionatorRepository_impl
 
 object HighestBidAuction {

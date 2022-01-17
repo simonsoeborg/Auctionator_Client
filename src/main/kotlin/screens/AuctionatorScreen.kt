@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import controller.MainController
+import kotlinx.coroutines.*
 import model.AuctionData
 import navigation.NavController
 import navigation.Screen
@@ -22,11 +23,16 @@ import navigation.Screen
 @Composable
 @Preview
 fun AuctionatorScreen(navController: NavController, mainController: MainController) {
+    GlobalScope.launch(Dispatchers.IO){
+        while (true) {
+            delay(5000L)
+            mainController.refreshAuctions()
+        }
+    }
     val allAuctions : State<List<AuctionData>> = mainController.allAuctions.collectAsState()
-    val currentAuction : State<AuctionData> = mainController.currentAuction.collectAsState()
 
     if(LoginItems.isLoggedIn) {
-        currentAuctions(navController, allAuctions, currentAuction)
+        currentAuctions(navController, allAuctions.value, fetchSpecificAuction = { mainController.updateCurrentAuction(it) } )
     } else {
         Column(
             modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
@@ -39,11 +45,7 @@ fun AuctionatorScreen(navController: NavController, mainController: MainControll
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun currentAuctions(navController: NavController, auctionsState: State<List<AuctionData>>, current : State<AuctionData>){
-
-    val auctions : List<AuctionData> = auctionsState.value
-    var temp : MutableList<AuctionData> = emptyList<AuctionData>().toMutableList()
-    temp.add(current.value)
+fun currentAuctions(navController: NavController, auctionsState: List<AuctionData>, fetchSpecificAuction: (auctionURI: String) -> Unit){
 
     Column(
         modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
@@ -91,8 +93,10 @@ fun currentAuctions(navController: NavController, auctionsState: State<List<Auct
                     cells = GridCells.Fixed(1),
                     contentPadding = PaddingValues(8.dp)
                 ) {
-                    items(temp) { auction ->
+                    items(auctionsState) { auction ->
                         Row(modifier = Modifier.clickable {
+                            println(auction.auctionURI)
+                            fetchSpecificAuction(auction.auctionURI)
                             navController.navigate(Screen.AuctionScreen.name)
                         }) {
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.5F)) {

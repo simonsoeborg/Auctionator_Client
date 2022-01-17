@@ -1,5 +1,6 @@
 package theme
 
+import androidx.compose.desktop.DesktopMaterialTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -26,7 +27,7 @@ private val DarkColors = darkColors(
 fun AuctionatorTheme(
     content: @Composable () -> Unit
 ) {
-    MaterialTheme(
+    DesktopMaterialTheme(
         colors = DarkColors,
         typography = Typography(
             defaultFontFamily = FontFamily(Font("google_sans_regular.ttf"))

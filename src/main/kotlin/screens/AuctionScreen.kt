@@ -38,7 +38,7 @@ import java.net.URL
 
 @Composable
 fun AuctionScreen(navController: NavController, mainController: MainController){
-    DesktopMaterialTheme {
+
         Column(
             modifier = Modifier.fillMaxHeight().fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -47,16 +47,15 @@ fun AuctionScreen(navController: NavController, mainController: MainController){
                 ConnectingBidders()
             }
             Row {
-                GetItemImage()
+                GetItemImage(mainController.currentAuction.value.auctionImageURL)
             }
             Row {
-                GetBidName()
+                GetBidName(mainController.currentAuction.value.auctionTitle)
             }
             Row {
                 MakingABid()
             }
         }
-    }
 }
 
 @Composable
@@ -75,14 +74,14 @@ fun ConnectingBidders() {
 //------------------------------------------hente et billede på nettet--------------------------------------------------
 
 @Composable
-fun GetItemImage() {
+fun GetItemImage(url: String) {
     Column(
         modifier = Modifier.padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         AsyncImage(
-            load = { loadImageBitmap("https://lw-cdn.com/images/0F993425AC1B/k_45ca6b8e23245aeca9cf07f29b954e73;w_1600;h_1600;q_100/elaine-led-vaeglampe-med-en-lampe-messing.jpg") },
+            load = { loadImageBitmap(url) },
             painterFor = { remember { BitmapPainter(it) } },
             contentDescription = "Sample",
             modifier = Modifier.width(200.dp)
@@ -127,13 +126,13 @@ fun loadImageBitmap(url: String): ImageBitmap =
 //----------------------------------------------------------------------------------------------------------------------
 
 @Composable
-fun GetBidName() {
+fun GetBidName(auctionTitle: String) {
     Column(
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(modifier = Modifier.padding(20.dp)) {
-            Text("item Name*", fontSize = 30.sp)
+            Text(auctionTitle, fontSize = 30.sp)
         }
     }
 }
