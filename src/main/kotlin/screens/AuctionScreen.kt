@@ -22,6 +22,8 @@ import androidx.compose.ui.res.loadImageBitmap
 import controller.MainController
 import factories.LoginItems
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import navigation.NavController
 import java.io.IOException
@@ -50,7 +52,7 @@ fun AuctionScreen(navController: NavController, mainController: MainController){
             Row {
                 currentBidAndPrice(mainController.currentAuction.value.auctionHighestBid, mainController.currentAuction.value.auctionPrice)
             }
-            Row { enterBid() }
+            Row { enterBid(mainController) }
         }
 }
 
@@ -173,7 +175,7 @@ fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
 }
 
 @Composable
-fun enterBid (){
+fun enterBid (mainController: MainController){
     val userBid = remember { mutableStateOf(0) }
     Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
         TextField(
@@ -187,7 +189,12 @@ fun enterBid (){
         TextButton(onClick = {
             if (userBid.value <= LoginItems.money){
                 // Send bid
-                println("you bid have now been send: you bidded "+ userBid.value)
+                runBlocking {
+                    launch {
+                        println("you bid have now been send: you bidded "+ userBid.value)
+                        mainController.bidOnAuction(userBid.value.toString())
+                    }
+                }
             }
             else { println("You do not have enough money: "+ userBid.value + " is higher than your current saldo: "+ LoginItems.money)
             }

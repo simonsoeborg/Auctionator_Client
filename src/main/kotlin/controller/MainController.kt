@@ -89,7 +89,8 @@ class MainController {
 
     }
 
-    fun bidOnAuction() {
+    suspend fun bidOnAuction(userBid : String) {
+        LiveAuctionSingleton.instance.sendBid(userBid)
 
     }
 
