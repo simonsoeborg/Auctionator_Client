@@ -12,6 +12,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import controller.MainController
 import kotlinx.coroutines.*
 import model.AuctionData
@@ -34,11 +35,12 @@ fun AuctionatorScreen(navController: NavController, mainController: MainControll
     if(LoginItems.isLoggedIn) {
         currentAuctions(navController, allAuctions.value, fetchSpecificAuction = { mainController.updateCurrentAuction(it) } )
     } else {
-        Column(
-            modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Not logged in")
+        Column(modifier = Modifier.fillMaxHeight(1f)
+            .fillMaxWidth(1f)
+            .padding(40.dp),horizontalAlignment = Alignment.CenterHorizontally) {
+            Row {
+                Text(text = "You're Not logged In!", fontSize = 30.sp)
+            }
         }
     }
 }
