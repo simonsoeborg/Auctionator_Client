@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import controller.MainController
+import factories.LoginItems
 import screens.AuctionScreen
 import screens.CreateAuctionScreen
 
@@ -84,7 +85,7 @@ fun NavigationRailSetup(
         /*modifier = Modifier.align(Alignment.CenterStart).fillMaxHeight()*/
     ) {
         screens.forEach {
-            if (it.label != "Login" && it.label != "Auction") {
+            if (it.label != "Auction") {
                 NavigationRailItem(
                     selected = currentScreen == it.name,
                     icon = {
