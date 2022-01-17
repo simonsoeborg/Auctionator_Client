@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import model.AuctionData
 import model.SpecificAuctionData
-import org.jspace.RemoteSpace
 
 class MainController {
 
