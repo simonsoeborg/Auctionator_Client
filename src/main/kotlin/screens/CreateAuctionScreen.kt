@@ -69,7 +69,7 @@ fun CreateAuctionScreen(navController: NavController, mainController: MainContro
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 value = auctionTime.value.toString(),
                 onValueChange = { auctionTime.value = it.toInt() },
-                label = { Text("Enter duration in ms") },
+                label = { Text("Enter duration in min") },
                 placeholder = { Text("Duration") }
             )
         }
