@@ -112,11 +112,10 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
                             }
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
                                 Text(
-                                    text = auction.auctionEndTime,
+                                    text = auction.auctionEndTime + " min",
                                     style = TextStyle(textAlign = TextAlign.Center),
                                 )
                             }
-
                         }
                     }
                 }

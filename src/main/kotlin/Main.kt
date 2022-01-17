@@ -33,7 +33,7 @@ fun main() = application {
 
     Window(onCloseRequest = ::exitApplication,
         title = "Auctionator Client",
-        state = rememberWindowState(width = 1000.dp, height = 600.dp),
+        state = rememberWindowState(width = 1400.dp, height = 1000.dp),
         icon = icon
     ) {
         app()
