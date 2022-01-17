@@ -57,7 +57,7 @@ fun AuctionScreen(navController: NavController, mainController: MainController){
                 GetBidName(mainController.currentAuction.value.auctionTitle)
             }
             Row {
-                MakingABid()
+                MakingABid(mainController.currentAuction.value.auctionHighestBid)
             }
         }
 }
@@ -143,7 +143,7 @@ fun GetBidName(auctionTitle: String) {
 
 
 @Composable
-fun MakingABid() {
+fun MakingABid(highestBid: String) {
     var userBid = remember { mutableStateOf(0) }
     Column(
         modifier = Modifier.padding(10.dp),
@@ -151,7 +151,7 @@ fun MakingABid() {
     ) {
         Row(modifier = Modifier.padding(5.dp)
         ) {
-            Text("higest bidder is " + userName + " with the current Bid: " + userBid.value.toString(), fontSize = 15.sp)
+            Text("The current highest bid is $highestBid", fontSize = 15.sp)
         }
 
         Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -162,7 +162,6 @@ fun MakingABid() {
                 label = { Text("Enter bid") },
                 placeholder = { Text("bid") },
             )
-
 
             TextButton(onClick = {
                 if (userBid.value <= LoginItems.money){
