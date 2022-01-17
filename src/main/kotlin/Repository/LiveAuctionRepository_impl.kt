@@ -22,7 +22,7 @@ class LiveAuctionRepository_impl : LiveAuctionRepository {
     }
 
     override suspend fun getSpecificAuctionData() : Flow<SpecificAuctionData> = flow {
-        val response = currentAuctionSpace.get(
+        val response = currentAuctionSpace.query(
             ActualField("initialdata"),
             ActualField(LoginItems.userName),
             FormalField(String::class.java), // Title
