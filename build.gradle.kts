@@ -19,7 +19,6 @@ repositories {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation("com.google.code.gson:gson:2.8.9")
-    implementation("org.kodein.di:kodein-di:7.6.0")
 }
 
 tasks.withType<KotlinCompile>() {
