@@ -1,5 +1,4 @@
 package screens
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,13 +11,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.loadImageBitmap
 import controller.MainController
 import factories.LoginItems
 import kotlinx.coroutines.Dispatchers
@@ -28,12 +27,24 @@ import kotlinx.coroutines.withContext
 import navigation.NavController
 import java.io.IOException
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Composable
 fun AuctionScreen(navController: NavController, mainController: MainController){
+    println("")
+    println("Endtime "+mainController.currentAuction.value.auctionTimeRemaining)
 
-        Column(
+    val initialDate = Calendar.getInstance() // Current DateTime
+    initialDate.timeZone = TimeZone.getTimeZone("GMT+1") // Set TimeZone
+    // Format date so it matches the pattern from auctionTimeRemaining:
+    val formatter = SimpleDateFormat("HH:mm:ss")
+    val timeStamp = formatter.format(initialDate.time)
+    println("Current Time "+timeStamp.toString())
+
+
+    Column(
             modifier = Modifier.fillMaxHeight().fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -160,7 +171,7 @@ fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
             Text("The starting price is ", fontSize = 15.sp, modifier = Modifier.padding(bottom = 25.dp))
             Text("$minimumPrice $", color = Color(0xFF55aaaa), modifier = Modifier.padding(bottom = 25.dp))
         }
-        if (highestBid.toInt()==1){
+        if (highestBid.toInt()==0){
             Row {
                 Text("There is currently")
                 Text(" NO ", color = Color.Red)
