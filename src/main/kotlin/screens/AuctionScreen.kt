@@ -24,7 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import model.AuctionData
 import model.SpecificAuctionData
 import navigation.NavController
 import java.io.IOException
@@ -157,7 +156,6 @@ fun getAuctionDescription(description: String) {
 
 @Composable
 fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
-    println(highestBid)
     Column(
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally

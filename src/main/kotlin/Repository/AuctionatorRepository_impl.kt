@@ -21,18 +21,15 @@ class AuctionatorRepository_impl : AuctionatorRepository {
         imageUrl: String
     ) {
 
-
-         MainScope().launch {
-            ConnectionSingleton.lobby.put(
-                "create",
-                userName,
-                auctionTitle,
-                price,
-                endTime,
-                description,
-                imageUrl
-            )
-        }
+        ConnectionSingleton.lobby.put(
+            "create",
+            userName,
+            auctionTitle,
+            price,
+            endTime,
+            description,
+            imageUrl
+        )
     }
 
     override suspend fun getAuction() : Flow<AuctionData> = flow  {
@@ -81,12 +78,15 @@ class AuctionatorRepository_impl : AuctionatorRepository {
 
      override fun getAllAuctionsOld() : Flow<List<AuctionData>> = flow {
          val response = ConnectionSingleton.lobby.queryAll(
-            ActualField("auction"), // auction
-            FormalField(String::class.java), // Id
-            FormalField(String::class.java), // Title
-            FormalField(String::class.java), // EndTime
-            FormalField(String::class.java), // Price
-            FormalField(String::class.java) // Uri
+             ActualField("auction"),    //0
+             FormalField(String::class.java), //1 AuctionID
+             FormalField(String::class.java), //2 Title
+             FormalField(String::class.java), //3 Price
+             FormalField(String::class.java), //4 HighestBid
+             FormalField(String::class.java), //5 Timestamp
+             FormalField(String::class.java), //6 Description
+             FormalField(String::class.java), //7 ImageURL
+             FormalField(String::class.java), //8 Auction creator
         )
 
         val auctionList = mutableListOf<AuctionData>()

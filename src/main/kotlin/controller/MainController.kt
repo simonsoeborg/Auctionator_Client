@@ -1,13 +1,10 @@
 package controller
 
 import factories.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import model.AuctionData
 import model.SpecificAuctionData
 import java.text.SimpleDateFormat
@@ -18,7 +15,7 @@ class MainController {
 
     private val dummyAuctionData: AuctionData = AuctionData("Hejsa", "50", "500", "5", "uri")
     private val specificDummyAuctionData: SpecificAuctionData = SpecificAuctionData(
-        "tcp://127.0.0.1:9001/auction1?keep",
+        "null",
         "Test",
         "500",
         "550",
@@ -36,33 +33,35 @@ class MainController {
 
 
     init {
-        getAllAuctions()
+        GlobalScope.launch(Dispatchers.IO) {
+            getAllAuctions()
+        }
     }
 
-    private fun getAllAuctions() {
-        runBlocking {
-            launch {
+    private suspend fun getAllAuctions() {
                 AuctionSingleton.instance.getAllAuctionsOld().collect {
                     _allAuctions.value = it
-                }
-            }
         }
     }
 
-    fun refreshAuctions() {
+    suspend fun refreshAuctions() {
         getAllAuctions()
     }
 
-    fun updateCurrentAuction(auctionURI: String) {
-        runBlocking {
-            launch {
-                LiveAuctionSingleton.instance.joinAuction(auctionURI)
-                LiveAuctionSingleton.instance.getSpecificAuctionData().collect {
-                    _currentAuction.value = it
-                }
+    suspend fun joinAuction(auctionID: String) {
+
+            LiveAuctionSingleton.instance.getSpecificAuctionData(auctionID).collect {
+                _currentAuction.value = it
             }
-        }
+
+
+            LiveAuctionSingleton.instance.userOnline(auctionID)
+            LiveAuctionSingleton.instance.updateSpecificAuctionData(auctionID, LoginItems.userName).collect {
+                _currentAuction.value = it
+            }
+
     }
+
 
     suspend fun createAuction(
         auctionTitle: String,
@@ -81,8 +80,8 @@ class MainController {
         )
     }
 
-    suspend fun bidOnAuction(userBid: String) {
-        LiveAuctionSingleton.instance.sendBid(userBid)
+   suspend fun bidOnAuction(userBid: String) {
+        LiveAuctionSingleton.instance.sendBid(userBid, _currentAuction.value.auctionId)
     }
 
     fun deleteAuction() {

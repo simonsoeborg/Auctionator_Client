@@ -16,7 +16,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import controller.MainController
+import factories.LiveAuctionSingleton
 import factories.LoginItems
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import screens.AuctionScreen
 import screens.CreateAuctionScreen
 
@@ -51,6 +55,9 @@ fun CustomNavigationHost(
 ) {
     NavigationHost(navController) {
         composable(Screen.AuctionatorScreen.name) {
+            /*GlobalScope.launch(Dispatchers.Main) {
+                LiveAuctionSingleton.instance.leaveAuction()
+            }*/
             AuctionatorScreen(navController, mainController)
         }
 
