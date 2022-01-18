@@ -54,20 +54,15 @@ class MainController {
     }
 
     fun updateCurrentAuction(auctionURI: String) {
-        GlobalScope.launch(Dispatchers.IO) {
-            LiveAuctionSingleton.instance.joinAuction(auctionURI)
-            LiveAuctionSingleton.instance.getSpecificAuctionData().collect {
-                _currentAuction.value = it
+        runBlocking {
+            launch {
+                LiveAuctionSingleton.instance.joinAuction(auctionURI)
+                LiveAuctionSingleton.instance.getSpecificAuctionData().collect {
+                    _currentAuction.value = it
+                }
             }
         }
     }
-
-    private suspend fun updateHighestBid() {
-        LiveAuctionSingleton.instance.updateHighestBid().collect {
-            _currentAuction.value = it
-        }
-    }
-
 
     suspend fun createAuction(
         auctionTitle: String,
