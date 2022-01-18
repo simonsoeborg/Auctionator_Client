@@ -24,6 +24,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import model.AuctionData
+import model.SpecificAuctionData
 import navigation.NavController
 import java.io.IOException
 import java.net.URL
@@ -33,16 +35,8 @@ import java.util.*
 
 @Composable
 fun AuctionScreen(navController: NavController, mainController: MainController){
-    println("")
-    println("Endtime "+mainController.currentAuction.value.auctionTimeRemaining)
 
-    val initialDate = Calendar.getInstance() // Current DateTime
-    initialDate.timeZone = TimeZone.getTimeZone("GMT+1") // Set TimeZone
-    // Format date so it matches the pattern from auctionTimeRemaining:
-    val formatter = SimpleDateFormat("HH:mm:ss")
-    val timeStamp = formatter.format(initialDate.time)
-    println("Current Time "+timeStamp.toString())
-
+    val auctionData : State<SpecificAuctionData> = mainController.currentAuction.collectAsState()
 
     Column(
             modifier = Modifier.fillMaxHeight().fillMaxWidth(),
@@ -52,16 +46,16 @@ fun AuctionScreen(navController: NavController, mainController: MainController){
                 AmountOfbidders()
             }
             Row {
-                GetItemImage(mainController.currentAuction.value.auctionImageURL)
+                GetItemImage(auctionData.value.auctionImageURL)
             }
             Row {
-                getAuctionTitle(mainController.currentAuction.value.auctionTitle)
+                getAuctionTitle(auctionData.value.auctionTitle)
             }
             Row {
-                getAuctionDescription(mainController.currentAuction.value.auctionDescription)
+                getAuctionDescription(auctionData.value.auctionDescription)
             }
             Row {
-                currentBidAndPrice(mainController.currentAuction.value.auctionHighestBid, mainController.currentAuction.value.auctionPrice)
+                currentBidAndPrice(auctionData.value.auctionHighestBid, auctionData.value.auctionPrice)
             }
             Row { enterBid(mainController) }
         }
@@ -163,6 +157,7 @@ fun getAuctionDescription(description: String) {
 
 @Composable
 fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
+    println(highestBid)
     Column(
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -213,5 +208,24 @@ fun enterBid (mainController: MainController){
         }, colors = ButtonDefaults.textButtonColors(backgroundColor = Color(0xFF55aaaa)), modifier = Modifier.padding(start = 20.dp)){
             Text("Send bid", color = Color.White)
         }
+    }
+}
+
+@Composable
+fun countDownClock (mainController: MainController) {
+
+    val endTime = mainController.currentAuction.value.auctionTimeRemaining; // Auction timeout time
+    val initialDate = Calendar.getInstance() // Current DateTime
+    initialDate.timeZone = TimeZone.getTimeZone("GMT+1") // Set TimeZone
+
+    // Format date so it matches the pattern from auctionTimeRemaining:
+    val formatter = SimpleDateFormat("HH:mm:ss")
+    val currentTimeStamp = formatter.format(initialDate.time)
+
+    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Text(
+            text = currentTimeStamp,
+            color = Color.White
+        )
     }
 }

@@ -1,6 +1,9 @@
 package controller
 
+import com.sun.jdi.IntegerType
 import factories.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -8,6 +11,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import model.AuctionData
 import model.SpecificAuctionData
+import java.sql.Time
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainController {
 
@@ -29,6 +36,7 @@ class MainController {
 
     private val _currentAuction: MutableStateFlow<SpecificAuctionData> = MutableStateFlow(specificDummyAuctionData)
     val currentAuction: StateFlow<SpecificAuctionData> = _currentAuction
+
 
     init {
         getAllAuctions()
@@ -68,6 +76,7 @@ class MainController {
             }
         }
         print(_currentAuction.value.auctionImageURL)
+        updateBid()
     }
 
 
@@ -89,13 +98,51 @@ class MainController {
 
     }
 
-    suspend fun bidOnAuction(userBid : String) {
+    suspend fun bidOnAuction(userBid: String) {
         LiveAuctionSingleton.instance.sendBid(userBid)
 
     }
 
     fun deleteAuction() {
 
+    }
+
+    fun updateBid() {
+            GlobalScope.launch(Dispatchers.IO) {
+                        _currentAuction.value.copy(auctionHighestBid = LiveAuctionSingleton.instance.updateHighestBid())
+
+                }
+            }
+
+
+    //private val _currentAuction: MutableStateFlow<SpecificAuctionData> = MutableStateFlow(specificDummyAuctionData)
+    //val currentAuction: StateFlow<SpecificAuctionData> = _currentAuction
+
+    private  val _isRunning : MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isRunning : StateFlow<Boolean> = _isRunning
+
+    private  val _hours : MutableStateFlow<Int> = MutableStateFlow(0)
+    val hours : MutableStateFlow<Int> = _hours
+
+    private  val _mins : MutableStateFlow<Int> = MutableStateFlow(0)
+    val mins : MutableStateFlow<Int> = _mins
+
+    private  val _seconds : MutableStateFlow<Int> = MutableStateFlow(0)
+    val seconds : MutableStateFlow<Int> = _seconds
+
+
+    fun updateTimer () {
+        val totalEndTime = currentAuction.value.auctionTimeRemaining
+
+        val initialDate = Calendar.getInstance() // Current DateTime
+        initialDate.timeZone = TimeZone.getTimeZone("GMT+1") // Set TimeZone
+
+        // Format date so it matches the pattern from auctionTimeRemaining:
+        val formatter = SimpleDateFormat("HH:mm:ss")
+        val currentTimeStamp = formatter.format(initialDate.time)
+        val endTime = formatter.format(totalEndTime)
+
+        //endTime
     }
 }
 
