@@ -196,7 +196,7 @@ fun enterBid (mainController: MainController){
                 // Send bid
                 runBlocking {
                     launch {
-                        println("you bid have now been send: you bidded "+ userBid.value)
+                        println("Your bid have now been sent: "+ userBid.value)
                         mainController.bidOnAuction(userBid.value.toString())
                     }
                 }

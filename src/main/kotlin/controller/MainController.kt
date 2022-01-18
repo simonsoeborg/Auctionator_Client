@@ -13,7 +13,6 @@ import java.util.*
 class MainController {
 
 
-    private val dummyAuctionData: AuctionData = AuctionData("Hejsa", "50", "500", "5", "uri")
     private val specificDummyAuctionData: SpecificAuctionData = SpecificAuctionData(
         "null",
         "Test",
@@ -21,11 +20,11 @@ class MainController {
         "550",
         "255",
         "Test test",
-        "https://manchetknapperne.dk/wp/wp-content/uploads/2020/09/Pin-skipper-skr%C3%A6k-b.jpg",
+        "null",
         LoginItems.userName
     )
 
-    private val _allAuctions: MutableStateFlow<List<AuctionData>> = MutableStateFlow(listOf(dummyAuctionData))
+    private val _allAuctions: MutableStateFlow<List<AuctionData>> = MutableStateFlow(emptyList())
     val allAuctions: StateFlow<List<AuctionData>> = _allAuctions
 
     private val _currentAuction: MutableStateFlow<SpecificAuctionData> = MutableStateFlow(specificDummyAuctionData)
@@ -33,13 +32,13 @@ class MainController {
 
 
     init {
-        GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.Unconfined) {
             getAllAuctions()
         }
     }
 
     private suspend fun getAllAuctions() {
-                AuctionSingleton.instance.getAllAuctionsOld().collect {
+                AuctionSingleton.instance.getAllAuctions().collect {
                     _allAuctions.value = it
         }
     }
@@ -48,22 +47,30 @@ class MainController {
         getAllAuctions()
     }
 
-    suspend fun joinAuction(auctionID: String) {
-
+    fun joinAuction(auctionID: String) {
+        GlobalScope.launch(Dispatchers.Default){
             LiveAuctionSingleton.instance.getSpecificAuctionData(auctionID).collect {
                 _currentAuction.value = it
             }
-
-
-            LiveAuctionSingleton.instance.userOnline(auctionID)
-            LiveAuctionSingleton.instance.updateSpecificAuctionData(auctionID, LoginItems.userName).collect {
-                _currentAuction.value = it
-            }
-
+        }
+        refreshAuction(auctionID)
     }
 
+     fun refreshAuction(auctionID: String){
 
-    suspend fun createAuction(
+        GlobalScope.launch(Dispatchers.IO){
+
+            LiveAuctionSingleton.instance.userOnline(auctionID)
+
+            withContext(Dispatchers.IO){
+                LiveAuctionSingleton.instance.updateSpecificAuctionData(auctionID, LoginItems.userName).collect {
+                    _currentAuction.value = it
+                }
+            }
+        }
+    }
+
+     fun createAuction(
         auctionTitle: String,
         auctionPrice: String,
         auctionTime: String,
@@ -80,7 +87,7 @@ class MainController {
         )
     }
 
-   suspend fun bidOnAuction(userBid: String) {
+   fun bidOnAuction(userBid: String) {
         LiveAuctionSingleton.instance.sendBid(userBid, _currentAuction.value.auctionId)
     }
 

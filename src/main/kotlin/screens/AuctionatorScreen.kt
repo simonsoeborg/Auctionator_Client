@@ -24,20 +24,13 @@ import navigation.Screen
 @Composable
 @Preview
 fun AuctionatorScreen(navController: NavController, mainController: MainController) {
-    /*GlobalScope.async {
-        while (true) {
-            delay(5000L)
-            mainController.refreshAuctions()
-        }
-    }
-     */
+
+    //mainController.refreshAuction(mainController.currentAuction.value.auctionId)
 
     val allAuctions : State<List<AuctionData>> = mainController.allAuctions.collectAsState()
 
     if(LoginItems.isLoggedIn) {
-        currentAuctions(navController, allAuctions.value, fetchSpecificAuction = {
-            GlobalScope.launch(Dispatchers.IO) { mainController.joinAuction(it) }
-             } )
+        currentAuctions(navController, allAuctions.value, fetchSpecificAuction = {mainController.joinAuction(it)} )
     } else {
         Column(modifier = Modifier.fillMaxHeight(1f)
             .fillMaxWidth(1f)
@@ -103,7 +96,11 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
                         Row(modifier = Modifier.clickable {
                             //println(auction.auctionURI)
                             fetchSpecificAuction(auction.auctionId.toString())
-                            navController.navigate(Screen.AuctionScreen.name)
+                            GlobalScope.launch(Dispatchers.IO) {
+                                delay(200L)
+                                navController.navigate(Screen.AuctionScreen.name)
+
+                            }
                         }) {
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.5F)) {
                                 Text(

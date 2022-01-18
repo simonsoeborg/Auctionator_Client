@@ -14,12 +14,12 @@ class LiveAuctionRepository_impl : LiveAuctionRepository {
 
     private val currentAuctionSpace = ConnectionSingleton.lobby
 
-    override suspend fun userOnline(auctionId: String) {
+    override fun userOnline(auctionId: String) {
         currentAuctionSpace.put("online", auctionId, LoginItems.userName)
     }
 
 
-    override suspend fun getSpecificAuctionData(auctionId : String) : Flow<SpecificAuctionData> = flow {
+    override fun getSpecificAuctionData(auctionId : String) : Flow<SpecificAuctionData> = flow {
         val response = currentAuctionSpace.query(
             ActualField("auction"),    //0
             ActualField(auctionId),          //1 AuctionID
@@ -38,17 +38,19 @@ class LiveAuctionRepository_impl : LiveAuctionRepository {
             auctionPrice = response[3].toString(), // Price
             auctionHighestBid = response[4].toString(), // HighestBid
             auctionTimeRemaining = response[5].toString(), // Timestamp
-            auctionDescription = response[6].toString(),
-            auctionImageURL = response[7].toString(),
-            userName = response[8].toString()
+            auctionDescription = response[6].toString(), // Description
+            auctionImageURL = response[7].toString(), // ImageURL
+            userName = response[8].toString() // AuctionCreator
         )
+
+        print("IMG URL: "+response[7].toString())
 
         emit(auctionDataObj)
     }
 
 
-    override suspend fun updateSpecificAuctionData(auctionId : String, username: String) : Flow<SpecificAuctionData> = flow {
-        val response = currentAuctionSpace.query(
+    override fun updateSpecificAuctionData(auctionId : String, username: String) : Flow<SpecificAuctionData> = flow {
+        val response = currentAuctionSpace.get(
             ActualField("auction_"+auctionId),    //0
             ActualField(username),           //1 AuctionID
             FormalField(String::class.java), //2 Title
@@ -66,26 +68,25 @@ class LiveAuctionRepository_impl : LiveAuctionRepository {
             auctionPrice = response[3].toString(), // Price
             auctionHighestBid = response[4].toString(), // HighestBid
             auctionTimeRemaining = response[5].toString(), // Timestamp
-            auctionDescription = response[6].toString(),
-            auctionImageURL = response[7].toString(),
-            userName = response[8].toString()
+            auctionDescription = response[6].toString(), // Description
+            auctionImageURL = response[7].toString(), // ImageURL
+            userName = response[8].toString() // AuctionCreator
         )
 
         emit(auctionDataObj)
     }
 
 
-    override suspend fun sendBid(bid: String, auctionId: String) {
+    override fun sendBid(bid: String, auctionId: String) {
         currentAuctionSpace.put("bid", auctionId, bid, LoginItems.userName)
     }
 
 
-    override suspend fun getOnlineClients(): String {
+    override fun getOnlineClients(): String {
         val response = currentAuctionSpace.query(
             ActualField("onlineclients"),
             FormalField(String::class.java)
         )
         return response[1].toString()
     }
-
 }
