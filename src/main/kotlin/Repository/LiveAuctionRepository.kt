@@ -8,6 +8,6 @@ interface LiveAuctionRepository {
     suspend fun getSpecificAuctionData() : Flow<SpecificAuctionData>
     suspend fun sendBid(bid: String)
     suspend fun leaveAuction()
-    suspend fun updateHighestBid(): String
+    suspend fun updateHighestBid(): Flow<SpecificAuctionData>
     suspend fun getOnlineClients(): String
 }

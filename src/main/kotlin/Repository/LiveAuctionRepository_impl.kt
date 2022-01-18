@@ -59,22 +59,45 @@ class LiveAuctionRepository_impl : LiveAuctionRepository {
         currentAuctionSpace.put("bid",bid,LoginItems.userName)
     }
 
-    override suspend fun updateHighestBid(): String {
-        currentAuctionSpace.put("online",LoginItems.userName)
+
+    override suspend fun updateHighestBid(): Flow<SpecificAuctionData> = flow {
         val response = currentAuctionSpace.get(
-            ActualField("highestbid"),
-            ActualField(LoginItems.userName),
-            FormalField(String::class.java)
+            ActualField("auctiondata"), //0
+            ActualField(LoginItems.userName),//1
+            FormalField(String::class.java), //2 Title
+            FormalField(String::class.java), //3 Price
+            FormalField(String::class.java), //4 HighestBid
+            FormalField(String::class.java), //5 Timestamp
+            FormalField(String::class.java), //6 Description
+            FormalField(String::class.java), //7 ImageURL
+            FormalField(String::class.java), //8 UserName
         )
-        return response[2].toString()
+
+        val auctionDataObj = SpecificAuctionData(
+            auctionURI = currentAuctionSpaceURI, // URI
+            auctionTitle = response[2].toString(), // Title
+            auctionPrice = response[3].toString(), // Price
+            auctionHighestBid = response[4].toString(), // HighestBid
+            auctionTimeRemaining = response[5].toString(), // Timestamp
+            auctionDescription = response[6].toString(),
+            auctionImageURL = response[7].toString(),
+            userName = response[8].toString()
+        )
+
+        currentAuctionSpace.put("online",LoginItems.userName)
+
+        print(auctionDataObj.auctionPrice + " Price")
+        print(auctionDataObj.auctionHighestBid + " highest price")
+
+        emit(auctionDataObj)
     }
 
     override suspend fun getOnlineClients(): String {
-        val reponse = currentAuctionSpace.query(
+        val response = currentAuctionSpace.query(
             ActualField("onlineclients"),
             FormalField(String::class.java)
         )
-        return reponse[1].toString()
+        return response[1].toString()
     }
 
     private fun setCurrentAuctionSpace(uri: String) {

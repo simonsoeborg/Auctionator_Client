@@ -166,6 +166,7 @@ fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
             Text("The starting price is ", fontSize = 15.sp, modifier = Modifier.padding(bottom = 25.dp))
             Text("$minimumPrice $", color = Color(0xFF55aaaa), modifier = Modifier.padding(bottom = 25.dp))
         }
+
         if (highestBid.toInt()==0){
             Row {
                 Text("There is currently")

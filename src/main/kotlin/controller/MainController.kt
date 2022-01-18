@@ -1,6 +1,5 @@
 package controller
 
-import com.sun.jdi.IntegerType
 import factories.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -11,8 +10,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import model.AuctionData
 import model.SpecificAuctionData
-import java.sql.Time
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,16 +39,6 @@ class MainController {
         getAllAuctions()
     }
 
-    private fun getAuction() {
-        runBlocking {
-            launch {
-                AuctionSingleton.instance.getAuction().collect {
-                    //_currentAuction.value = it
-                }
-            }
-        }
-    }
-
     private fun getAllAuctions() {
         runBlocking {
             launch {
@@ -67,16 +54,18 @@ class MainController {
     }
 
     fun updateCurrentAuction(auctionURI: String) {
-        runBlocking {
-            launch {
-                LiveAuctionSingleton.instance.joinAuction(auctionURI)
-                LiveAuctionSingleton.instance.getSpecificAuctionData().collect {
-                    _currentAuction.value = it
-                }
+        GlobalScope.launch(Dispatchers.IO) {
+            LiveAuctionSingleton.instance.joinAuction(auctionURI)
+            LiveAuctionSingleton.instance.getSpecificAuctionData().collect {
+                _currentAuction.value = it
             }
         }
-        print(_currentAuction.value.auctionImageURL)
-        updateBid()
+    }
+
+    private suspend fun updateHighestBid() {
+        LiveAuctionSingleton.instance.updateHighestBid().collect {
+            _currentAuction.value = it
+        }
     }
 
 
@@ -95,28 +84,16 @@ class MainController {
             description,
             imageUrl
         )
-
     }
 
     suspend fun bidOnAuction(userBid: String) {
         LiveAuctionSingleton.instance.sendBid(userBid)
-
     }
 
     fun deleteAuction() {
 
     }
 
-    fun updateBid() {
-            GlobalScope.launch(Dispatchers.IO) {
-                        _currentAuction.value.copy(auctionHighestBid = LiveAuctionSingleton.instance.updateHighestBid())
-
-                }
-            }
-
-
-    //private val _currentAuction: MutableStateFlow<SpecificAuctionData> = MutableStateFlow(specificDummyAuctionData)
-    //val currentAuction: StateFlow<SpecificAuctionData> = _currentAuction
 
     private  val _isRunning : MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isRunning : StateFlow<Boolean> = _isRunning
