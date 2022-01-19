@@ -18,7 +18,8 @@ import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import controller.MainController
+import controller.AuctionController
+import controller.LobbyController
 import factories.LoginItems
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,9 +34,9 @@ import java.util.*
 
 
 @Composable
-fun AuctionScreen(navController: NavController, mainController: MainController){
-
-    val auctionData : State<SpecificAuctionData> = mainController.currentAuction.collectAsState()
+fun AuctionScreen(navController: NavController, lobbyController: LobbyController){
+    val auctionController = AuctionController()
+    val auctionData : State<SpecificAuctionData> = auctionController.currentAuction.collectAsState()
 
     Column(
             modifier = Modifier.fillMaxHeight().fillMaxWidth(),
@@ -56,7 +57,7 @@ fun AuctionScreen(navController: NavController, mainController: MainController){
             Row {
                 currentBidAndPrice(auctionData.value.auctionHighestBid, auctionData.value.auctionPrice)
             }
-            Row { enterBid(mainController) }
+            Row { enterBid(auctionController) }
         }
 }
 
@@ -180,7 +181,7 @@ fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
 }
 
 @Composable
-fun enterBid (mainController: MainController){
+fun enterBid (auctionController: AuctionController){
     val userBid = remember { mutableStateOf(0) }
     Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
         TextField(
@@ -197,7 +198,7 @@ fun enterBid (mainController: MainController){
                 runBlocking {
                     launch {
                         println("Your bid have now been sent: "+ userBid.value)
-                        mainController.bidOnAuction(userBid.value.toString())
+                        auctionController.bidOnAuction(userBid.value.toString())
                     }
                 }
             }
@@ -211,9 +212,9 @@ fun enterBid (mainController: MainController){
 }
 
 @Composable
-fun countDownClock (mainController: MainController) {
+fun countDownClock (auctionController: AuctionController) {
 
-    val endTime = mainController.currentAuction.value.auctionTimeRemaining; // Auction timeout time
+    val endTime = auctionController.currentAuction.value.auctionTimeRemaining; // Auction timeout time
     val initialDate = Calendar.getInstance() // Current DateTime
     initialDate.timeZone = TimeZone.getTimeZone("GMT+1") // Set TimeZone
 

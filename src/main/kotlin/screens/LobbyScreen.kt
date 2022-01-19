@@ -13,7 +13,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import controller.MainController
+import controller.AuctionController
+import controller.LobbyController
 import kotlinx.coroutines.*
 import model.AuctionData
 import navigation.NavController
@@ -23,14 +24,11 @@ import navigation.Screen
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview
-fun AuctionatorScreen(navController: NavController, mainController: MainController) {
+fun LobbyScreen(navController: NavController, lobbyController: LobbyController) {
 
-    //mainController.refreshAuction(mainController.currentAuction.value.auctionId)
-
-    val allAuctions : State<List<AuctionData>> = mainController.allAuctions.collectAsState()
-
+    val allAuctions : State<List<AuctionData>> = lobbyController.allAuctions.collectAsState()
     if(LoginItems.isLoggedIn) {
-        currentAuctions(navController, allAuctions.value, fetchSpecificAuction = {mainController.joinAuction(it)} )
+        currentAuctions(navController, allAuctions.value, fetchSpecificAuction = {AuctionController().joinAuction(it)} )
     } else {
         Column(modifier = Modifier.fillMaxHeight(1f)
             .fillMaxWidth(1f)

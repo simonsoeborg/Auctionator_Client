@@ -1,14 +1,13 @@
 package repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import model.SpecificAuctionData
 
-interface LiveAuctionRepository {
+interface AuctionRepository {
 
-    fun userOnline(auctionId: String)
+    fun userOnline(auctionId: String) : Boolean
     fun getSpecificAuctionData(auctionId: String) : Flow<SpecificAuctionData>
     fun updateSpecificAuctionData(auctionId: String, username: String) : Flow<SpecificAuctionData>
-    fun sendBid(bid: String, auctionId: String)
+    fun sendBid(bid: String, auctionId: String) : Boolean
     fun getOnlineClients(): String
 }

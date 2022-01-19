@@ -1,16 +1,14 @@
 package repository
 
 import factories.ConnectionSingleton
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import model.AuctionData
 import org.jspace.ActualField
 import org.jspace.FormalField
 
 
-class AuctionatorRepository_impl : AuctionatorRepository {
+class LobbyRepository_impl : LobbyRepository {
 
     override fun createAuction(
         userName: String,

@@ -1,21 +1,19 @@
 package repository
 
 import factories.ConnectionSingleton
-import factories.LiveAuctionSingleton
 import factories.LoginItems
 import model.SpecificAuctionData
 import org.jspace.ActualField
 import org.jspace.FormalField
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.jspace.RemoteSpace
 
-class LiveAuctionRepository_impl : LiveAuctionRepository {
+class AuctionRepository_impl : AuctionRepository {
 
     private val currentAuctionSpace = ConnectionSingleton.lobby
 
-    override fun userOnline(auctionId: String) {
-        currentAuctionSpace.put("online", auctionId, LoginItems.userName)
+    override fun userOnline(auctionId: String) : Boolean {
+        return currentAuctionSpace.put("online", auctionId, LoginItems.userName)
     }
 
 
@@ -77,8 +75,8 @@ class LiveAuctionRepository_impl : LiveAuctionRepository {
     }
 
 
-    override fun sendBid(bid: String, auctionId: String) {
-        currentAuctionSpace.put("bid", auctionId, bid, LoginItems.userName)
+    override fun sendBid(bid: String, auctionId: String) : Boolean {
+        return currentAuctionSpace.put("bid", auctionId, bid, LoginItems.userName)
     }
 
 

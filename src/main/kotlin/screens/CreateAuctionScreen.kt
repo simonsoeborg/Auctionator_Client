@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import controller.MainController
+import controller.LobbyController
 import factories.LoginItems
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -29,9 +29,9 @@ import navigation.Screen
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 @Preview
-fun CreateAuctionScreen(navController: NavController, mainController: MainController) {
+fun CreateAuctionScreen(navController: NavController, lobbyController: LobbyController) {
     if(LoginItems.isLoggedIn) {
-        CreateAuctionComposables(navController, mainController)
+        CreateAuctionComposables(navController, lobbyController)
     } else {
         Column(modifier = Modifier.fillMaxHeight(1f)
             .fillMaxWidth(1f)
@@ -46,7 +46,7 @@ fun CreateAuctionScreen(navController: NavController, mainController: MainContro
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CreateAuctionComposables(navController: NavController, mainController: MainController) {
+fun CreateAuctionComposables(navController: NavController, lobbyController: LobbyController) {
     val auctionTitle = remember { mutableStateOf("") }
     val auctionPrice = remember { mutableStateOf("") }
     val auctionTime = remember { mutableStateOf("") }
@@ -202,7 +202,7 @@ fun CreateAuctionComposables(navController: NavController, mainController: MainC
             Button(onClick = {
                 runBlocking {
                     launch {
-                        mainController.createAuction(
+                        lobbyController.createAuction(
                             auctionTitle.value,
                             auctionPrice.value,
                             auctionTime.value,

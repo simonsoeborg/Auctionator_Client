@@ -1,6 +1,6 @@
 package navigation
 
-import AuctionatorScreen
+import LobbyScreen
 import LoginScreen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,12 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import controller.MainController
-import factories.LiveAuctionSingleton
-import factories.LoginItems
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import controller.LobbyController
 import screens.AuctionScreen
 import screens.CreateAuctionScreen
 
@@ -51,27 +46,23 @@ enum class Screen(
 @Composable
 fun CustomNavigationHost(
     navController: NavController,
-    mainController: MainController
+    lobbyController: LobbyController,
 ) {
     NavigationHost(navController) {
         composable(Screen.AuctionatorScreen.name) {
-            /*GlobalScope.launch(Dispatchers.Main) {
-                LiveAuctionSingleton.instance.leaveAuction()
-            }*/
-            AuctionatorScreen(navController, mainController)
+            LobbyScreen(navController, lobbyController)
         }
 
         composable(Screen.LoginScreen.name) {
-            LoginScreen(navController, mainController)
+            LoginScreen(navController)
         }
 
         composable(Screen.CreateAuctionScreen.name) {
-            CreateAuctionScreen(navController, mainController)
+            CreateAuctionScreen(navController, lobbyController)
         }
 
         composable(Screen.AuctionScreen.name) {
-            // TODO: Figure out how to pass auctionId to AuctionScreen
-            AuctionScreen(navController, mainController)
+            AuctionScreen(navController, lobbyController)
         }
 
     }.build()
@@ -81,7 +72,7 @@ fun CustomNavigationHost(
 @Composable
 fun NavigationRailSetup(
     navController: NavController,
-    mainController: MainController
+    lobbyController: LobbyController
 ) {
     val screens = Screen.values().toList()
     val currentScreen by remember {
@@ -116,6 +107,6 @@ fun NavigationRailSetup(
     Box(
         modifier = Modifier.fillMaxHeight()
     ) {
-        CustomNavigationHost(navController = navController, mainController)
+        CustomNavigationHost(navController = navController, lobbyController)
     }
 }
