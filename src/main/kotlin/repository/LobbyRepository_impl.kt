@@ -12,9 +12,11 @@ import org.jspace.FormalField
 
 
 class LobbyRepository_impl : LobbyRepository {
-    val lobbyScope = CoroutineScope(Dispatchers.IO)
+
+    private val lobbyScope = CoroutineScope(Dispatchers.IO)
+
     override fun createAuction(
-        userName: String,
+        username: String,
         auctionTitle: String,
         price: String,
         endTime: String,
@@ -24,7 +26,7 @@ class LobbyRepository_impl : LobbyRepository {
         lobbyScope.launch {
             ConnectionSingleton.lobby.put(
                 "create",
-                userName,
+                username,
                 auctionTitle,
                 price,
                 endTime,
@@ -32,30 +34,6 @@ class LobbyRepository_impl : LobbyRepository {
                 imageUrl
             )
         }
-    }
-
-    override fun getAuction() : Flow<AuctionData> = flow  {
-        /*
-        val response = ConnectionSingleton.lobby.query(
-            ActualField("auction"), // auction
-            FormalField(String::class.java), // Id
-            FormalField(String::class.java), // Title
-            FormalField(String::class.java), // EndTime
-            FormalField(String::class.java), // Price
-            FormalField(String::class.java) // Uri
-        )
-
-        val temp = AuctionData(
-            auctionId = response[1].toString(),
-            auctionTitle = response[2].toString(),
-            auctionEndTime = response[3].toString(),
-            auctionPrice = response[4].toString(),
-            auctionURI = response[5].toString()
-        )
-
-        emit(temp)
-
-         */
     }
 
 

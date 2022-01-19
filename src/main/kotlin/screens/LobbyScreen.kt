@@ -13,10 +13,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import controller.AuctionController
 import controller.LobbyController
 import factories._AuctionID
-import kotlinx.coroutines.*
 import model.AuctionData
 import navigation.NavController
 import navigation.Screen
@@ -27,8 +25,8 @@ import navigation.Screen
 @Preview
 fun LobbyScreen(navController: NavController, lobbyController: LobbyController) {
 
-    val allAuctions : State<List<AuctionData>> = lobbyController.allAuctions.collectAsState()
     lobbyController.refreshAllAuctions()
+    val allAuctions : State<List<AuctionData>> = lobbyController.allAuctions.collectAsState()
 
     if(LoginItems.isLoggedIn) {
         currentAuctions(navController, allAuctions.value)

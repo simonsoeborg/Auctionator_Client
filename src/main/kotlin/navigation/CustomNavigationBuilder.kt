@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import controller.AuctionController
 import controller.LobbyController
 import screens.AuctionScreen
 import screens.CreateAuctionScreen

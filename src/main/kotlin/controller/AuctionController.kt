@@ -42,32 +42,42 @@ class AuctionController(auctionID: String?) {
         auctionRepo.getSpecificAuctionData(auctionID).collect {
             _currentAuction.value = it
         }
+        auctionRepo.userOnline(auctionID)
         refreshAuction(auctionID)
     }
 
     // TODO This needs to work properly with Coroutine IO
-    suspend fun refreshAuction(auctionID: String) {
-        var hasRun : Boolean = false
-
-        if(!hasRun) {
+    fun refreshAuction(auctionID: String) {
             auctionScope.launch {
-                if (auctionRepo.userOnline(auctionID)) {
                     println("IOThread: " + Thread.currentThread().name)
                     auctionRepo.updateSpecificAuctionData(auctionID, LoginItems.userName).collect {
                         _currentAuction.value = it
-                        println("Highest Bid " + it.auctionHighestBid)
-                        hasRun = true
-                    }
-                } else {
-                    cancel()
-                }
-                delay(1000L)
             }
         }
     }
 
+//    // TODO This needs to work properly with Coroutine IO
+//    suspend fun refreshAuction(auctionID: String) {
+//        var hasRun : Boolean = false
+//
+//        if(!hasRun) {
+//            auctionScope.launch {
+//                if (auctionRepo.userOnline(auctionID)) {
+//                    println("IOThread: " + Thread.currentThread().name)
+//                    auctionRepo.updateSpecificAuctionData(auctionID, LoginItems.userName).collect {
+//                        _currentAuction.value = it
+//                        println("Highest Bid " + it.auctionHighestBid)
+//                        hasRun = true
+//                    }
+//                } else {
+//                    cancel()
+//                }
+//                delay(1000L)
+//            }
+//        }
+//    }
+
     fun bidOnAuction(userBid: String) {
         auctionRepo.sendBid(userBid, _currentAuction.value.auctionId)
     }
-
 }
