@@ -21,10 +21,8 @@ import androidx.compose.ui.unit.sp
 import controller.AuctionController
 import controller.LobbyController
 import factories.LoginItems
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import factories._AuctionID
+import kotlinx.coroutines.*
 import model.SpecificAuctionData
 import navigation.NavController
 import java.io.IOException
@@ -34,8 +32,13 @@ import java.util.*
 
 
 @Composable
-fun AuctionScreen(navController: NavController, lobbyController: LobbyController){
-    val auctionController = AuctionController()
+fun AuctionScreen(navController: NavController){
+    val auctionController = AuctionController(_AuctionID.instance.getId())
+
+    MainScope().launch {
+        delay(500L)
+    }
+
     val auctionData : State<SpecificAuctionData> = auctionController.currentAuction.collectAsState()
 
     Column(

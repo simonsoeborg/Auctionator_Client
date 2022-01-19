@@ -2,6 +2,7 @@ package repository
 
 import factories.ConnectionSingleton
 import factories.LoginItems
+import factories._AuctionID
 import model.SpecificAuctionData
 import org.jspace.ActualField
 import org.jspace.FormalField
@@ -16,8 +17,8 @@ class AuctionRepository_impl : AuctionRepository {
         return currentAuctionSpace.put("online", auctionId, LoginItems.userName)
     }
 
-
     override fun getSpecificAuctionData(auctionId : String) : Flow<SpecificAuctionData> = flow {
+        println("Getting Auction")
         val response = currentAuctionSpace.query(
             ActualField("auction"),    //0
             ActualField(auctionId),          //1 AuctionID
@@ -41,15 +42,14 @@ class AuctionRepository_impl : AuctionRepository {
             userName = response[8].toString() // AuctionCreator
         )
 
-        print("IMG URL: "+response[7].toString())
-
+        // print("IMG URL: "+response[7].toString())
         emit(auctionDataObj)
+        println("Got Auction " + response[2].toString())
     }
 
-
     override fun updateSpecificAuctionData(auctionId : String, username: String) : Flow<SpecificAuctionData> = flow {
-        val response = currentAuctionSpace.get(
-            ActualField("auction_"+auctionId),    //0
+        val response = currentAuctionSpace.get (
+            ActualField("auction_$auctionId"),    //0
             ActualField(username),           //1 AuctionID
             FormalField(String::class.java), //2 Title
             FormalField(String::class.java), //3 Price
@@ -74,11 +74,10 @@ class AuctionRepository_impl : AuctionRepository {
         emit(auctionDataObj)
     }
 
-
-    override fun sendBid(bid: String, auctionId: String) : Boolean {
-        return currentAuctionSpace.put("bid", auctionId, bid, LoginItems.userName)
+    override fun sendBid(bid: String, auctionId: String) {
+        if(currentAuctionSpace.put("bid", auctionId, bid, LoginItems.userName))
+            updateSpecificAuctionData(_AuctionID.instance.getId(), LoginItems.userName)
     }
-
 
     override fun getOnlineClients(): String {
         val response = currentAuctionSpace.query(

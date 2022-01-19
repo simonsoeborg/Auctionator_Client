@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import controller.AuctionController
 import controller.LobbyController
 import screens.AuctionScreen
 import screens.CreateAuctionScreen
@@ -62,7 +63,7 @@ fun CustomNavigationHost(
         }
 
         composable(Screen.AuctionScreen.name) {
-            AuctionScreen(navController, lobbyController)
+            AuctionScreen(navController)
         }
 
     }.build()
@@ -72,7 +73,7 @@ fun CustomNavigationHost(
 @Composable
 fun NavigationRailSetup(
     navController: NavController,
-    lobbyController: LobbyController
+    lobbyController: LobbyController,
 ) {
     val screens = Screen.values().toList()
     val currentScreen by remember {

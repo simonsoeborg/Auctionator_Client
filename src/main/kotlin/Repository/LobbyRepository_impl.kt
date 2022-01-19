@@ -1,15 +1,18 @@
 package repository
 
 import factories.ConnectionSingleton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import model.AuctionData
 import org.jspace.ActualField
 import org.jspace.FormalField
 
 
 class LobbyRepository_impl : LobbyRepository {
-
+    val lobbyScope = CoroutineScope(Dispatchers.IO)
     override fun createAuction(
         userName: String,
         auctionTitle: String,
@@ -18,16 +21,18 @@ class LobbyRepository_impl : LobbyRepository {
         description: String,
         imageUrl: String
     ) {
+        lobbyScope.launch {
+            ConnectionSingleton.lobby.put(
+                "create",
+                userName,
+                auctionTitle,
+                price,
+                endTime,
+                description,
+                imageUrl
+            )
+        }
 
-        ConnectionSingleton.lobby.put(
-            "create",
-            userName,
-            auctionTitle,
-            price,
-            endTime,
-            description,
-            imageUrl
-        )
     }
 
     override fun getAuction() : Flow<AuctionData> = flow  {
@@ -49,7 +54,7 @@ class LobbyRepository_impl : LobbyRepository {
         )
 
         emit(temp)
-        }
+    }
 
 
     override fun getAllAuctions() : Flow<List<AuctionData>> = flow {

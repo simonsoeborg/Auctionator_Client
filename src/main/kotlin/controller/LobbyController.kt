@@ -11,13 +11,13 @@ import kotlinx.coroutines.launch
 import model.AuctionData
 
 class LobbyController {
-    private val lobbyController = CoroutineScope(Dispatchers.IO) // Specific Scope for Lobby only
+    private val lobbyScope = CoroutineScope(Dispatchers.IO) // Specific Scope for Lobby only
 
     init {
-    lobbyController.launch {
-        getAllAuctions()
+        lobbyScope.launch {
+            getAllAuctions()
+        }
     }
-}
 
     private val _allAuctions: MutableStateFlow<List<AuctionData>> = MutableStateFlow(emptyList())
     val allAuctions: StateFlow<List<AuctionData>> = _allAuctions

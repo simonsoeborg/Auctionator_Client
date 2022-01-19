@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import controller.AuctionController
 import controller.LobbyController
+import factories._AuctionID
 import kotlinx.coroutines.*
 import model.AuctionData
 import navigation.NavController
@@ -27,8 +28,9 @@ import navigation.Screen
 fun LobbyScreen(navController: NavController, lobbyController: LobbyController) {
 
     val allAuctions : State<List<AuctionData>> = lobbyController.allAuctions.collectAsState()
+
     if(LoginItems.isLoggedIn) {
-        currentAuctions(navController, allAuctions.value, fetchSpecificAuction = {AuctionController().joinAuction(it)} )
+        currentAuctions(navController, allAuctions.value)
     } else {
         Column(modifier = Modifier.fillMaxHeight(1f)
             .fillMaxWidth(1f)
@@ -42,7 +44,7 @@ fun LobbyScreen(navController: NavController, lobbyController: LobbyController) 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun currentAuctions(navController: NavController, auctionsState: List<AuctionData>, fetchSpecificAuction: (auctionURI: String) -> Unit){
+fun currentAuctions(navController: NavController, auctionsState: List<AuctionData>){
 
     Column(
         modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
@@ -92,13 +94,8 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
                 ) {
                     items(auctionsState) { auction ->
                         Row(modifier = Modifier.clickable {
-                            //println(auction.auctionURI)
-                            fetchSpecificAuction(auction.auctionId.toString())
-                            GlobalScope.launch(Dispatchers.IO) {
-                                delay(200L)
-                                navController.navigate(Screen.AuctionScreen.name)
-
-                            }
+                            _AuctionID.instance.setId(auction.auctionId.toString())
+                            navController.navigate(Screen.AuctionScreen.name)
                         }) {
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.5F)) {
                                 Text(
