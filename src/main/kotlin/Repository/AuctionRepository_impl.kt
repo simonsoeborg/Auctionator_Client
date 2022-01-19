@@ -18,7 +18,6 @@ class AuctionRepository_impl : AuctionRepository {
     }
 
     override fun getSpecificAuctionData(auctionId : String) : Flow<SpecificAuctionData> = flow {
-        println("Getting Auction")
         val response = currentAuctionSpace.query(
             ActualField("auction"),    //0
             ActualField(auctionId),          //1 AuctionID
@@ -44,11 +43,11 @@ class AuctionRepository_impl : AuctionRepository {
 
         // print("IMG URL: "+response[7].toString())
         emit(auctionDataObj)
-        println("Got Auction " + response[2].toString())
     }
 
+    var specificAuctionResponse : Array<Any> = emptyArray()
     override fun updateSpecificAuctionData(auctionId : String, username: String) : Flow<SpecificAuctionData> = flow {
-        val response = currentAuctionSpace.get (
+        specificAuctionResponse = currentAuctionSpace.get (
             ActualField("auction_$auctionId"),    //0
             ActualField(username),           //1 AuctionID
             FormalField(String::class.java), //2 Title
@@ -61,22 +60,24 @@ class AuctionRepository_impl : AuctionRepository {
         )
 
         val auctionDataObj = SpecificAuctionData(
-            auctionId = response[1].toString(),     // AuctionID
-            auctionTitle = response[2].toString(), // Title
-            auctionPrice = response[3].toString(), // Price
-            auctionHighestBid = response[4].toString(), // HighestBid
-            auctionTimeRemaining = response[5].toString(), // Timestamp
-            auctionDescription = response[6].toString(), // Description
-            auctionImageURL = response[7].toString(), // ImageURL
-            userName = response[8].toString() // AuctionCreator
+            auctionId = specificAuctionResponse[1].toString(),     // AuctionID
+            auctionTitle = specificAuctionResponse[2].toString(), // Title
+            auctionPrice = specificAuctionResponse[3].toString(), // Price
+            auctionHighestBid = specificAuctionResponse[4].toString(), // HighestBid
+            auctionTimeRemaining = specificAuctionResponse[5].toString(), // Timestamp
+            auctionDescription = specificAuctionResponse[6].toString(), // Description
+            auctionImageURL = specificAuctionResponse[7].toString(), // ImageURL
+            userName = specificAuctionResponse[8].toString() // AuctionCreator
         )
 
         emit(auctionDataObj)
+
+        println(specificAuctionResponse[2])
+        specificAuctionResponse = emptyArray()
     }
 
     override fun sendBid(bid: String, auctionId: String) {
-        if(currentAuctionSpace.put("bid", auctionId, bid, LoginItems.userName))
-            updateSpecificAuctionData(_AuctionID.instance.getId(), LoginItems.userName)
+        currentAuctionSpace.put("bid", auctionId, bid, LoginItems.userName)
     }
 
     override fun getOnlineClients(): String {
