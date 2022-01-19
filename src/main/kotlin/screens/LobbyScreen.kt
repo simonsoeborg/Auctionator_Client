@@ -25,8 +25,8 @@ import navigation.Screen
 @Preview
 fun LobbyScreen(navController: NavController, lobbyController: LobbyController) {
 
-    lobbyController.refreshAllAuctions()
     val allAuctions : State<List<AuctionData>> = lobbyController.allAuctions.collectAsState()
+    lobbyController.refreshAllAuctions()
 
     if(LoginItems.isLoggedIn) {
         currentAuctions(navController, allAuctions.value)

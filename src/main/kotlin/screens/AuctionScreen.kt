@@ -34,12 +34,10 @@ import java.util.*
 @Composable
 fun AuctionScreen(navController: NavController){
     val auctionController = AuctionController(_AuctionID.instance.getId())
-
-    MainScope().launch {
-        delay(1000L)
-    }
-
+    auctionController.userOnline()
+    auctionController.listenForNewAuctionData()
     val auctionData : State<SpecificAuctionData> = auctionController.currentAuction.collectAsState()
+
 
     Column(
             modifier = Modifier.fillMaxHeight().fillMaxWidth(),
@@ -60,20 +58,20 @@ fun AuctionScreen(navController: NavController){
             Row {
                 currentBidAndPrice(auctionData.value.auctionHighestBid, auctionData.value.auctionPrice)
             }
-            Row { enterBid(auctionController) }
+            Row { enterBid(onEnterBid = {auctionController.bidOnAuction(it)}) }
         }
 }
 
 @Composable
 fun AmountOfbidders() {
     // Todo - Server needs to keep track of this?
-    val Bidders = remember { mutableStateOf(0) }
+    val bidders = remember { mutableStateOf(0) }
     Column(
         modifier = Modifier.fillMaxWidth().padding(3.dp),
         horizontalAlignment = Alignment.End
     ){
         Row(modifier = Modifier.padding(20.dp)) {
-            Text("Amount of bidders: ${Bidders.value}", fontSize = 20.sp)
+            Text("Amount of bidders: ${bidders.value}", fontSize = 20.sp)
         }
     }
 }
@@ -184,7 +182,7 @@ fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
 }
 
 @Composable
-fun enterBid (auctionController: AuctionController){
+fun enterBid (onEnterBid: (bid: String) -> Unit){
     val userBid = remember { mutableStateOf(0) }
     Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
         TextField(
@@ -198,12 +196,8 @@ fun enterBid (auctionController: AuctionController){
         TextButton(onClick = {
             if (userBid.value <= LoginItems.money){
                 // Send bid
-                runBlocking {
-                    launch {
-                        println("Your bid have now been sent: "+ userBid.value)
-                        auctionController.bidOnAuction(userBid.value.toString())
-                    }
-                }
+                println("Your bid have now been sent: "+ userBid.value)
+                onEnterBid(userBid.value.toString())
             }
             else { println("You do not have enough money: "+ userBid.value + " is higher than your current saldo: "+ LoginItems.money)
             }

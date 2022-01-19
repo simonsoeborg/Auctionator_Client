@@ -2,7 +2,6 @@ package repository
 
 import factories.ConnectionSingleton
 import factories.LoginItems
-import factories._AuctionID
 import model.SpecificAuctionData
 import org.jspace.ActualField
 import org.jspace.FormalField
@@ -17,7 +16,7 @@ class AuctionRepository_impl : AuctionRepository {
         return currentAuctionSpace.put("online", auctionId, LoginItems.userName)
     }
 
-    override fun getSpecificAuctionData(auctionId : String) : Flow<SpecificAuctionData> = flow {
+    override fun getSpecificAuctionData(auctionId: String): SpecificAuctionData {
         val response = currentAuctionSpace.query(
             ActualField("auction"),    //0
             ActualField(auctionId),          //1 AuctionID
@@ -30,7 +29,7 @@ class AuctionRepository_impl : AuctionRepository {
             FormalField(String::class.java), //8 UserName
         )
 
-        val auctionDataObj = SpecificAuctionData(
+        return SpecificAuctionData(
             auctionId = response[1].toString(),     // AuctionID
             auctionTitle = response[2].toString(), // Title
             auctionPrice = response[3].toString(), // Price
@@ -40,14 +39,10 @@ class AuctionRepository_impl : AuctionRepository {
             auctionImageURL = response[7].toString(), // ImageURL
             userName = response[8].toString() // AuctionCreator
         )
-
-        // print("IMG URL: "+response[7].toString())
-        emit(auctionDataObj)
     }
 
-    var specificAuctionResponse : Array<Any> = emptyArray()
     override fun updateSpecificAuctionData(auctionId : String, username: String) : Flow<SpecificAuctionData> = flow {
-        specificAuctionResponse = currentAuctionSpace.get (
+        val specificAuctionResponse = currentAuctionSpace.get (
             ActualField("auction_$auctionId"),    //0
             ActualField(username),           //1 AuctionID
             FormalField(String::class.java), //2 Title
@@ -71,9 +66,6 @@ class AuctionRepository_impl : AuctionRepository {
         )
 
         emit(auctionDataObj)
-
-        println(specificAuctionResponse[2])
-        specificAuctionResponse = emptyArray()
     }
 
     override fun sendBid(bid: String, auctionId: String) {
