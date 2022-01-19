@@ -32,10 +32,10 @@ class LobbyRepository_impl : LobbyRepository {
                 imageUrl
             )
         }
-
     }
 
     override fun getAuction() : Flow<AuctionData> = flow  {
+        /*
         val response = ConnectionSingleton.lobby.query(
             ActualField("auction"), // auction
             FormalField(String::class.java), // Id
@@ -54,6 +54,8 @@ class LobbyRepository_impl : LobbyRepository {
         )
 
         emit(temp)
+
+         */
     }
 
 
@@ -77,9 +79,12 @@ class LobbyRepository_impl : LobbyRepository {
                 AuctionData(
                     auctionId = it[1].toString(),
                     auctionTitle = it[2].toString(),
-                    auctionEndTime = it[3].toString(),
-                    auctionPrice = it[4].toString(),
-                    auctionURI = it[5].toString()
+                    auctionPrice = it[3].toString(),
+                    highestBid = it[4].toString(),
+                    auctionEndTime = it[5].toString(),
+                    description = it[6].toString(),
+                    imageURL = it[7].toString(),
+                    auctionCreator = it[8].toString()
                 )
             )
         }

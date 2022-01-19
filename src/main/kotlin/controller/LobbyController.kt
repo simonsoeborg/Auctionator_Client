@@ -28,6 +28,14 @@ class LobbyController {
         }
     }
 
+    fun refreshAllAuctions() {
+        lobbyScope.launch {
+            LobbySingleton.instance.getAllAuctions().collect {
+                _allAuctions.value = it
+            }
+        }
+    }
+
     fun createAuction(
         auctionTitle: String,
         auctionPrice: String,

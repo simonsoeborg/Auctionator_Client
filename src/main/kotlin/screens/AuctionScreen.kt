@@ -36,7 +36,7 @@ fun AuctionScreen(navController: NavController){
     val auctionController = AuctionController(_AuctionID.instance.getId())
 
     MainScope().launch {
-        delay(500L)
+        delay(1000L)
     }
 
     val auctionData : State<SpecificAuctionData> = auctionController.currentAuction.collectAsState()

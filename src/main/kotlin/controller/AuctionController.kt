@@ -63,7 +63,6 @@ class AuctionController(auctionID: String?) {
                 }
                 delay(1000L)
             }
-
         }
     }
 

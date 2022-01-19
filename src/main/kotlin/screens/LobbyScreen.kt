@@ -28,6 +28,7 @@ import navigation.Screen
 fun LobbyScreen(navController: NavController, lobbyController: LobbyController) {
 
     val allAuctions : State<List<AuctionData>> = lobbyController.allAuctions.collectAsState()
+    lobbyController.refreshAllAuctions()
 
     if(LoginItems.isLoggedIn) {
         currentAuctions(navController, allAuctions.value)
@@ -77,13 +78,13 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
                     }
                     Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
                         Text(
-                            text = "Price",
+                            text = "Current price",
                             style = TextStyle(fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                         )
                     }
                     Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
                         Text(
-                            text = "Time Remaining",
+                            text = "Auction ends",
                             style = TextStyle(fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                         )
                     }
@@ -104,13 +105,17 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
                             }
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
                                 Text(
-                                    text = auction.auctionPrice + " $",
+                                    text = if (auction.highestBid.equals("0")){
+                                                  auction.auctionPrice
+                                            } else{
+                                              auction.highestBid
+                                              },
                                     style = TextStyle(textAlign = TextAlign.Center),
                                 )
                             }
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {
                                 Text(
-                                    text = auction.auctionEndTime + " min",
+                                    text = auction.auctionEndTime,
                                     style = TextStyle(textAlign = TextAlign.Center),
                                 )
                             }

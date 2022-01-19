@@ -204,8 +204,8 @@ fun CreateAuctionComposables(navController: NavController, lobbyController: Lobb
                     launch {
                         lobbyController.createAuction(
                             auctionTitle.value,
-                            auctionPrice.value,
-                            auctionTime.value,
+                            auctionPrice.value.filterNot { it.isWhitespace() },
+                            auctionTime.value.filterNot { it.isWhitespace() },
                             description.value,
                             imageUrl.value
                         )
