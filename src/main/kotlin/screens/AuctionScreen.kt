@@ -23,6 +23,8 @@ import model.SpecificAuctionData
 import navigation.NavController
 import java.io.IOException
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun AuctionScreen(navController: NavController, auctionController: AuctionController){
@@ -212,7 +214,7 @@ fun EnterBid (onEnterBid: (bid: String) -> Unit){
 fun countDownClock (auctionController: AuctionController) {
     val endTime = auctionController.currentAuction.value.auctionTimeRemaining; // Auction timeout time
     val initialDate = Calendar.getInstance() // Current DateTime
-    initialDate.timeZone = TimeZone.getTimeZone("GMT+1") // Set TimeZone
+    initialDate.timeZone = TsimeZone.getTimeZone("GMT+1") // Set TimeZone
 
     // Format date so it matches the pattern from auctionTimeRemaining:
     val formatter = SimpleDateFormat("HH:mm:ss")
