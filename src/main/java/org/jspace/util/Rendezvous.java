@@ -121,7 +121,7 @@ public class Rendezvous<T,V> {
 		/**
 		 * Data value associated in the wrapper.
 		 */
-		private T tag;
+		private final T tag;
 
 		/**
 		 * Data value associated in the wrapper.

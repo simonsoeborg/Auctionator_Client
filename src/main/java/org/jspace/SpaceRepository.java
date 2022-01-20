@@ -47,8 +47,8 @@ import org.jspace.protocol.pSpaceMessage;
 public class SpaceRepository {
 	
 	private final HashMap<String,Space> spaces = new HashMap<String, Space>();
-	private ExecutorService executor = Executors.newCachedThreadPool();
-	private GateFactory gateFactory;
+	private final ExecutorService executor = Executors.newCachedThreadPool();
+	private final GateFactory gateFactory;
 	private LinkedList<ServerGate> gates = new LinkedList<>();
 	private LinkedList<ClientHandler> handlers = new LinkedList<>();
 	private ExceptionLogger logger = null;

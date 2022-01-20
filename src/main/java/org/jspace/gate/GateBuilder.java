@@ -31,8 +31,8 @@ import java.net.URI;
  */
 public interface GateBuilder {
 
-	public ClientGate createClientGate(URI uri);
+	ClientGate createClientGate(URI uri);
 	
-	public ServerGate createServerGate(URI uri);
+	ServerGate createServerGate(URI uri);
 	
 }

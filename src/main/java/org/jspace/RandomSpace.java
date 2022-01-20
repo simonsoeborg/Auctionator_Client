@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class RandomSpace extends SequentialSpace {
 	
-	private Random random;
+	private final Random random;
 
 	public RandomSpace() {
 		this(-1,new Random());

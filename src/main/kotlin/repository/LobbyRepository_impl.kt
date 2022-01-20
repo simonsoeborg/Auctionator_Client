@@ -36,7 +36,6 @@ class LobbyRepository_impl : LobbyRepository {
         }
     }
 
-
     override fun getAllAuctions() : Flow<List<AuctionData>> = flow {
         val response = ConnectionSingleton.lobby.queryAll(
             ActualField("auction"),    //0

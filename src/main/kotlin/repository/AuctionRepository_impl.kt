@@ -72,13 +72,11 @@ class AuctionRepository_impl : AuctionRepository {
     }
 
     override fun leaveAuction(auctionId: String, username: String) {
-         val res = currentAuctionSpace.get(
+         currentAuctionSpace.get(
             ActualField("online"),
             ActualField(auctionId),
             ActualField(username)
         )
-
-        println("leaving auction: " + res[1])
     }
 
     override fun getOnlineClients(): String {
