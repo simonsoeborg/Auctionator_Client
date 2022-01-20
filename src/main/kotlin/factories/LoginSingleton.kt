@@ -1,4 +1,4 @@
-package Factories
+package factories
 
 object LoginItems {
     var userName : String = ""

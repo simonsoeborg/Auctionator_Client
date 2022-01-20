@@ -1,10 +1,11 @@
-package navcontroller
+package navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import controller.AuctionController
+
 
 /**
  * NavController Class
@@ -15,6 +16,10 @@ class NavController(
 ) {
     // Variable to store the state of the current screen
     var currentScreen: MutableState<String> = mutableStateOf(startDestination)
+
+
+    // Attempt to do DI @ navController
+    //val viewModel = AuctionatorViewModel(AuctionatorRepository_impl)
 
     // Function to handle the navigation between the screen
     fun navigate(route: String) {

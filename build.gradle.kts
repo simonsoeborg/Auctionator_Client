@@ -22,13 +22,14 @@ dependencies {
 }
 
 tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "14"
 }
 
 compose.desktop {
     application {
         mainClass = "MainKt"
         nativeDistributions {
+            includeAllModules = true
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Auctionator"
             packageVersion = "1.0.0"
