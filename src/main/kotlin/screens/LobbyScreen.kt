@@ -108,7 +108,7 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
 
                             scope.launch {
                                 delay(200L)
-                                auctionController.userOnline()
+                                //auctionController.userOnline()
                                 auctionController.listenForNewAuctionData()
                             }
                             navController.navigate(Screen.AuctionScreen.name)

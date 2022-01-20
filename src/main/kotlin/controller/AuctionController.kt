@@ -40,11 +40,18 @@ class AuctionController {
 
     fun joinAuction() {
         _currentAuction.value = auctionRepo.getSpecificAuctionData(auctionID)
+        userOnline()
     }
 
-    fun userOnline() {
-        auctionRepo.userOnline(auctionID)
+    fun userOnline(): Boolean {
+        return auctionRepo.userOnline(auctionID)
     }
+    /*
+    fun leaveAuction(): Boolean{
+        return auctionRepo.leaveAuction
+    }
+
+     */
 
     fun listenForOnlineBidders(){
         auctionScope.launch {
@@ -54,10 +61,8 @@ class AuctionController {
 
     fun listenForNewAuctionData(){
         auctionScope.launch {
-            println("IOThread: " + Thread.currentThread().name)
-            auctionRepo.updateSpecificAuctionData(auctionID, LoginItems.userName).collect {
-                _currentAuction.value = it
-            }
+            _currentAuction.value = auctionRepo.updateSpecificAuctionData(auctionID, LoginItems.userName)
+            println("Highest Bid " + _currentAuction.value.auctionHighestBid)
         }
     }
 

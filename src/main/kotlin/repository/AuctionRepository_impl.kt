@@ -5,8 +5,6 @@ import factories.LoginItems
 import model.SpecificAuctionData
 import org.jspace.ActualField
 import org.jspace.FormalField
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class AuctionRepository_impl : AuctionRepository {
 
@@ -42,8 +40,8 @@ class AuctionRepository_impl : AuctionRepository {
         )
     }
 
-    override fun updateSpecificAuctionData(auctionId : String, username: String) : Flow<SpecificAuctionData> = flow {
-        val specificAuctionResponse = currentAuctionSpace.query (
+    override fun updateSpecificAuctionData(auctionId: String, username: String): SpecificAuctionData {
+        val specificAuctionResponse = currentAuctionSpace.query(
             ActualField("auction_$auctionId"),    //0
             ActualField(username),           //1 AuctionID
             FormalField(String::class.java), //2 Title
@@ -55,7 +53,7 @@ class AuctionRepository_impl : AuctionRepository {
             FormalField(String::class.java), //8 UserName
         )
 
-        val auctionDataObj = SpecificAuctionData(
+        return SpecificAuctionData(
             auctionId = specificAuctionResponse[1].toString(),     // AuctionID
             auctionTitle = specificAuctionResponse[2].toString(), // Title
             auctionPrice = specificAuctionResponse[3].toString(), // Price
@@ -65,12 +63,9 @@ class AuctionRepository_impl : AuctionRepository {
             auctionImageURL = specificAuctionResponse[7].toString(), // ImageURL
             userName = specificAuctionResponse[8].toString() // AuctionCreator
         )
-        println(auctionDataObj.auctionId)
-        println(auctionDataObj.auctionTitle)
-        println(auctionDataObj.auctionHighestBid)
-
-        emit(auctionDataObj)
     }
+
+
 
     override fun sendBid(bid: String, auctionId: String) {
         if (currentAuctionSpace.put("bid", auctionId, bid, LoginItems.userName)){
