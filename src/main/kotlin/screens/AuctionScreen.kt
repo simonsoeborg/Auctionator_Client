@@ -23,6 +23,8 @@ import model.SpecificAuctionData
 import navigation.NavController
 import java.io.IOException
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun AuctionScreen(navController: NavController, auctionController: AuctionController){
