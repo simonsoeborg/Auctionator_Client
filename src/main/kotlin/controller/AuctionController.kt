@@ -64,6 +64,7 @@ class AuctionController {
                 withTimeout(1500L){
                     try {
                         _currentAuction.value = auctionRepo.updateSpecificAuctionData(auctionID, LoginItems.userName)
+                        _onlineBidders.value = auctionRepo.getOnlineClients().toInt()
                     } catch (t : TimeoutCancellationException) {
                         println(t)
                     }
