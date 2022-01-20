@@ -34,10 +34,10 @@ import org.jspace.protocol.ServerMessage;
  */
 public interface ClientGate {
 	
-	public void open() throws UnknownHostException, IOException;
+	void open() throws IOException;
 	
-	public ServerMessage send( ClientMessage m ) throws UnknownHostException, IOException, InterruptedException;
+	ServerMessage send(ClientMessage m) throws IOException, InterruptedException;
 	
-	public void close() throws IOException;
+	void close() throws IOException;
 
 }

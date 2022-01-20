@@ -35,7 +35,7 @@ public class ActualField implements TemplateField {
 	/**
 	 * Field value.
 	 */
-	private Object value;
+	private final Object value;
 
 	/**
 	 * Create an actual field with value value

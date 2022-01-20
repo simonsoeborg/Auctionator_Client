@@ -4,10 +4,8 @@ import factories.LoginItems
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import model.SpecificAuctionData
 import repository.AuctionRepository_impl
-
 
 class AuctionController {
     private val auctionScope = CoroutineScope(Dispatchers.IO) // Specific Scope for Auctions only
@@ -33,9 +31,6 @@ class AuctionController {
 
     init {
         listenForOnlineBidders()
-        println("AuctionController bliver oprettet")
-        //joinAuction()
-        //listenForOnlineBidders()
     }
 
     fun joinAuction() {
@@ -78,7 +73,4 @@ class AuctionController {
         auctionRepo.sendBid(userBid, auctionID)
     }
 
-    operator fun invoke(): AuctionController {
-        return this
-    }
 }

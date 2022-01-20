@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import controller.AuctionController
-
 
 /**
  * NavController Class
@@ -14,14 +12,8 @@ class NavController(
     private val startDestination: String,
     private var backStackScreens: MutableSet<String> = mutableSetOf()
 ) {
-    // Variable to store the state of the current screen
     var currentScreen: MutableState<String> = mutableStateOf(startDestination)
 
-
-    // Attempt to do DI @ navController
-    //val viewModel = AuctionatorViewModel(AuctionatorRepository_impl)
-
-    // Function to handle the navigation between the screen
     fun navigate(route: String) {
         if (route != currentScreen.value) {
             if (backStackScreens.contains(currentScreen.value) && currentScreen.value != startDestination) {
@@ -38,7 +30,6 @@ class NavController(
         }
     }
 
-    // Function to handle the back
     fun navigateBack() {
         if (backStackScreens.isNotEmpty()) {
             currentScreen.value = backStackScreens.last()
@@ -47,10 +38,6 @@ class NavController(
     }
 }
 
-
-/**
- * Composable to remember the state of the navcontroller
- */
 @Composable
 fun rememberNavController(
     startDestination: String,

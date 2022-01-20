@@ -41,7 +41,7 @@ public final class Template implements Iterable<TemplateField>, Serializable {
 	/**
 	 * A list of template fields.
 	 */
-	private TemplateField[] fields;
+	private final TemplateField[] fields;
 
 	/**
 	 * Creates a new template starting from its fields.

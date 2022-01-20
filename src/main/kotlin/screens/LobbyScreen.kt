@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import controller.AuctionController
 import controller.LobbyController
-import factories._AuctionID
 import kotlinx.coroutines.*
 import model.AuctionData
 import navigation.NavController

@@ -44,7 +44,7 @@ public class GateFactory {
 	public final static String HTTPS_PROTOCOL = "https";
 	private static GateFactory instance;				
 	
-	private HashMap<String,GateBuilder> gateBuilders; 
+	private final HashMap<String,GateBuilder> gateBuilders;
 	
 	private GateFactory( ) {
 		this.gateBuilders = new HashMap<>();

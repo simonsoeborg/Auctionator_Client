@@ -44,9 +44,9 @@ public class ConnClientGate implements ClientGate {
 	
 	
 	private final jSpaceMarshaller marshaller;
-	private String host;
-	private int port;
-	private String target;
+	private final String host;
+	private final int port;
+	private final String target;
 
 	public ConnClientGate( jSpaceMarshaller marshaller , String host, int port, String target) {
 		this.marshaller = marshaller;
@@ -56,14 +56,14 @@ public class ConnClientGate implements ClientGate {
 	}
 	
 	@Override
-	public ServerMessage send(ClientMessage m) throws InterruptedException, UnknownHostException, IOException {
+	public ServerMessage send(ClientMessage m) throws InterruptedException, IOException {
 		ConnInteractionHandler handler = new ConnInteractionHandler();
 		new Thread( () -> handler.send(m) ).start();
 		return handler.getResponce();
 	}
 
 	@Override
-	public void open() throws UnknownHostException, IOException {
+	public void open() throws IOException {
 	}
 
 	@Override
@@ -74,11 +74,11 @@ public class ConnClientGate implements ClientGate {
 		
 		private ServerMessage message;
 		private IOException exception;
-		private Socket socket;
-		private BufferedReader reader;
-		private PrintWriter writer;
+		private final Socket socket;
+		private final BufferedReader reader;
+		private final PrintWriter writer;
 		
-		public ConnInteractionHandler( ) throws UnknownHostException, IOException {
+		public ConnInteractionHandler( ) throws IOException {
 			socket = new Socket(host, port);
 			reader = new BufferedReader( new InputStreamReader(socket.getInputStream()) );
 			writer = new PrintWriter(socket.getOutputStream());
