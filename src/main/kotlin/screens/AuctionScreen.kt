@@ -43,29 +43,29 @@ fun AuctionScreen(navController: NavController, auctionController: AuctionContro
             horizontalAlignment = Alignment.End
             ){
                 AmountOfbidders(onlineBidders.value)
-                Timer(timeRemaining.value)
+                Timer(timeRemaining.value, onLeaveAuction = { auctionController.leaveAuction()}, navController)
+                LeaveAuctionButton(navController, onLeaveAuction = { auctionController.leaveAuction() } )
             }
         }
         Row { ItemImage(auctionData.value.auctionImageURL) }
-        Row { AuctionTitle(auctionData.value.auctionTitle) }
+        Row { AuctionTitle(auctionData.value.auctionTitle, auctionData.value.userName)}
         Row { AuctionDescription(auctionData.value.auctionDescription) }
         Row { StartingPrice(auctionData.value.auctionPrice) }
         Row { CurrentBid(auctionData.value.auctionHighestBid) }
         Row { EnterBid(onEnterBid = {auctionController.bidOnAuction(it)}) }
-        Row{ LeaveAuctionButton(navController, onLeaveAuction = { auctionController.leaveAuction() }) }
     }
 }
 
 @Composable
 fun LeaveAuctionButton(navController: NavController, onLeaveAuction: () -> Unit) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Button(onClick = {
+        horizontalAlignment = Alignment.CenterHorizontally,)
+    {
+        Button(modifier = Modifier.padding(top = 10.dp, end = 10.dp), onClick = {
             onLeaveAuction()
             navController.navigateBack()
         }) {
-            Text("Leave Auction", fontSize = 12.sp)
+            Text("Leave Auction")
         }
     }
 }
@@ -132,16 +132,17 @@ fun loadImageBitmap(url: String): ImageBitmap =
 //----------------------------------------------------------------------------------------------------------------------
 
 @Composable
-fun AuctionTitle(auctionTitle: String) {
+fun AuctionTitle(auctionTitle: String, seller : String) {
     Column(
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(modifier = Modifier.padding(15.dp)) {
-            Text(auctionTitle, fontSize = 30.sp)
-        }
+                Text(auctionTitle, fontSize = 30.sp)
+                Text(seller, fontSize = 15.sp, modifier = Modifier.padding(top = 15.dp))
+            }
     }
-}
+
+
 
 @Composable
 fun AuctionDescription(description: String) {
@@ -192,61 +193,52 @@ fun CurrentBid(highestBid: String) {
 }
 
 @Composable
-fun EnterBid (onEnterBid: (bid: String) -> Unit){
+fun EnterBid (onEnterBid: (bid: String) -> Unit) {
     val userBid = remember { mutableStateOf(0) }
     Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
         TextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             value = userBid.value.toString(),
-            onValueChange = { userBid.value = it.toInt()},
+            onValueChange = { userBid.value = it.toInt() },
             label = { Text("Enter bid") },
             placeholder = { Text("bid") },
         )
 
         Button(onClick = {
-            if (userBid.value <= LoginItems.money){
+            if (userBid.value <= LoginItems.money) {
                 // Send bid
-                println("Your bid have now been sent: "+ userBid.value)
+                println("Your bid have now been sent: " + userBid.value)
                 onEnterBid(userBid.value.toString())
-            }
-            else { println("You do not have enough money: "+ userBid.value + " is higher than your current saldo: "+ LoginItems.money)
+            } else {
+                println("You do not have enough money: " + userBid.value + " is higher than your current saldo: " + LoginItems.money)
             }
 
-        }, modifier = Modifier.padding(start = 20.dp)){
+        }, modifier = Modifier.padding(start = 20.dp)) {
             Text("Send bid", color = Color.White)
         }
     }
 }
 
 @Composable
-fun countDownClock (auctionController: AuctionController) {
-
-    val endTime = auctionController.currentAuction.value.auctionTimeRemaining; // Auction timeout time
-    val initialDate = Calendar.getInstance() // Current DateTime
-    initialDate.timeZone = TimeZone.getTimeZone("GMT+1") // Set TimeZone
-
-    // Format date so it matches the pattern from auctionTimeRemaining:
-    val formatter = SimpleDateFormat("HH:mm:ss")
-    val currentTimeStamp = formatter.format(initialDate.time)
-
-    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Text(
-            text = currentTimeStamp,
-            color = Color.White
-        )
-    }
-}
-
-@Composable
 fun Timer(
-    totalTime: Int,
-) {
+    totalTime: Int, onLeaveAuction: () -> Unit, navController : NavController) {
     var currentTime by remember {
         mutableStateOf(totalTime)
     }
     var isTimerRunning by remember {
         mutableStateOf(true)
     }
+
+    if (currentTime == 0){
+
+        val scope = CoroutineScope(Dispatchers.IO)
+        scope.launch {
+            delay(5000L)
+            onLeaveAuction()
+            navController.navigateBack()
+            }
+        }
+
     LaunchedEffect(key1 = currentTime, key2 = isTimerRunning) {
         if(currentTime > 0 && isTimerRunning) {
             delay(1000)
@@ -259,7 +251,7 @@ fun Timer(
 
     ) {
        Text(
-            text = if(currentTime!=0){("Time remaining: "+ (currentTime/60).toString()+ " minutes "+(currentTime%60).toString()+" seconds")}
+            text = if(currentTime!=0){("Time remaining: "+ (currentTime/60).toString()+ " min "+(currentTime%60).toString()+" sec")}
            else{
                "Auction is over!"
                },
@@ -269,3 +261,4 @@ fun Timer(
         )
     }
 }
+
