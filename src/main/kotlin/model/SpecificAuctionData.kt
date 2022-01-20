@@ -1,7 +1,7 @@
 package model
 
 data class SpecificAuctionData (
-    var auctionURI : String,
+    var auctionId : String,
     var auctionTitle : String,
     val auctionPrice : String,
     val auctionHighestBid : String,

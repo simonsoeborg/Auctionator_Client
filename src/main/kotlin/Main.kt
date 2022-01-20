@@ -9,7 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import controller.MainController
+import controller.AuctionController
+import controller.LobbyController
 import navigation.NavigationRailSetup
 import navigation.Screen
 import navigation.rememberNavController
@@ -27,7 +28,6 @@ fun main() = application {
         }
     )
 
-
     Window(onCloseRequest = ::exitApplication,
         title = "Auctionator Client",
         state = rememberWindowState(width = 1400.dp, height = 1000.dp, placement = WindowPlacement.Maximized),
@@ -42,7 +42,8 @@ fun main() = application {
 @Preview
 fun app() {
     val navController by rememberNavController(Screen.LoginScreen.name)
-    val mainController = MainController()
+    val lobbyController = LobbyController()
+    val auctionController = AuctionController()
     AuctionatorTheme {
         Surface(
             modifier = Modifier.background(color = MaterialTheme.colors.background)
@@ -50,10 +51,9 @@ fun app() {
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-                NavigationRailSetup(navController, mainController)
+                NavigationRailSetup(navController, lobbyController, auctionController)
             }
         }
     }
-
 }
 

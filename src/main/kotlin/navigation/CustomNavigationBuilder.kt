@@ -1,6 +1,6 @@
 package navigation
 
-import AuctionatorScreen
+import LobbyScreen
 import LoginScreen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,8 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import controller.MainController
-import factories.LoginItems
+import controller.AuctionController
+import controller.LobbyController
 import screens.AuctionScreen
 import screens.CreateAuctionScreen
 
@@ -47,24 +47,24 @@ enum class Screen(
 @Composable
 fun CustomNavigationHost(
     navController: NavController,
-    mainController: MainController
+    lobbyController: LobbyController,
+    auctionController: AuctionController
 ) {
     NavigationHost(navController) {
         composable(Screen.AuctionatorScreen.name) {
-            AuctionatorScreen(navController, mainController)
+            LobbyScreen(navController, lobbyController, auctionController)
         }
 
         composable(Screen.LoginScreen.name) {
-            LoginScreen(navController, mainController)
+            LoginScreen(navController)
         }
 
         composable(Screen.CreateAuctionScreen.name) {
-            CreateAuctionScreen(navController, mainController)
+            CreateAuctionScreen(navController, lobbyController)
         }
 
         composable(Screen.AuctionScreen.name) {
-            // TODO: Figure out how to pass auctionId to AuctionScreen
-            AuctionScreen(navController, mainController)
+            AuctionScreen(navController, auctionController)
         }
 
     }.build()
@@ -74,7 +74,8 @@ fun CustomNavigationHost(
 @Composable
 fun NavigationRailSetup(
     navController: NavController,
-    mainController: MainController
+    lobbyController: LobbyController,
+    auctionController: AuctionController
 ) {
     val screens = Screen.values().toList()
     val currentScreen by remember {
@@ -109,6 +110,6 @@ fun NavigationRailSetup(
     Box(
         modifier = Modifier.fillMaxHeight()
     ) {
-        CustomNavigationHost(navController = navController, mainController)
+        CustomNavigationHost(navController = navController, lobbyController, auctionController)
     }
 }

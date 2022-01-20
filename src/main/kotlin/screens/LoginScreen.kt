@@ -21,13 +21,12 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import controller.MainController
 import navigation.NavController
 import navigation.Screen
 
 @Composable
 @Preview
-fun LoginScreen (navController: NavController, mainController: MainController) {
+fun LoginScreen (navController: NavController) {
 
     if (LoginItems.isLoggedIn) {
         Column(modifier = Modifier.fillMaxHeight(1f)
@@ -44,7 +43,7 @@ fun LoginScreen (navController: NavController, mainController: MainController) {
             }
         }
     } else {
-        LoginComposable(navController, mainController)
+        LoginComposable(navController)
     }
 }
 
@@ -57,7 +56,7 @@ fun LoginScreen (navController: NavController, mainController: MainController) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginComposable(navController: NavController, mainController: MainController) {
+fun LoginComposable(navController: NavController) {
     var userName = remember { mutableStateOf("Human") }
     var userPass = remember { mutableStateOf("") }
 
