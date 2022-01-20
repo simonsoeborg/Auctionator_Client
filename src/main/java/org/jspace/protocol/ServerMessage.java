@@ -173,9 +173,7 @@ public class ServerMessage {
 				return false;
 		} else if (!statusMessage.equals(other.statusMessage))
 			return false;
-		if (!Arrays.equals(tuples, other.tuples))
-			return false;
-		return true;
+		return Arrays.equals(tuples, other.tuples);
 	}
 
 	@Override

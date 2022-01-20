@@ -43,14 +43,14 @@ public class RemoteSpace implements Space {
 	private final URI uri;
 	private final ClientGate gate;
 
-	public RemoteSpace( URI uri ) throws UnknownHostException, IOException {
+	public RemoteSpace( URI uri ) throws IOException {
 		this.uri = uri;
 		this.gate = GateFactory.getInstance().getGateBuilder( uri.getScheme() ).createClientGate(uri);
 		this.gate.open();
 	}
 	
 
-	public RemoteSpace(String uri) throws UnknownHostException, IOException {
+	public RemoteSpace(String uri) throws IOException {
 		this(URI.create(uri));
 	}
 

@@ -41,7 +41,7 @@ public final class Tuple implements Iterable<Object>, Serializable {
 	/**
 	 * Tuple fields.
 	 */
-	private Object[] fields;
+	private final Object[] fields;
 
 	/**
 	 * Creates a new tuple.

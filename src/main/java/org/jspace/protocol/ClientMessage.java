@@ -216,11 +216,8 @@ public class ClientMessage {
 		} else if (!template.equals(other.template))
 			return false;
 		if (tuple == null) {
-			if (other.tuple != null)
-				return false;
-		} else if (!tuple.equals(other.tuple))
-			return false;
-		return true;
+			return other.tuple == null;
+		} else return tuple.equals(other.tuple);
 	}
 
 	@Override

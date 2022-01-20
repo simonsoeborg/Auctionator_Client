@@ -16,17 +16,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import controller.AuctionController
-import controller.LobbyController
 import factories.LoginItems
-import factories._AuctionID
 import kotlinx.coroutines.*
 import model.SpecificAuctionData
 import navigation.NavController
 import java.io.IOException
 import java.net.URL
-import java.text.SimpleDateFormat
-import java.util.*
-
 
 @Composable
 fun AuctionScreen(navController: NavController, auctionController: AuctionController){
@@ -84,8 +79,6 @@ fun AmountOfbidders(bidders: Int) {
     }
 }
 
-//------------------------------------------hente et billede på nettet--------------------------------------------------
-
 @Composable
 fun GetItemImage(url: String) {
     Column(
@@ -115,8 +108,6 @@ fun <T> AsyncImage(
             try {
                 load()
             } catch (e: IOException) {
-                // instead of printing to console, you can also write this to log,
-                // or show some error placeholder
                 e.printStackTrace()
                 null
             }
@@ -135,9 +126,6 @@ fun <T> AsyncImage(
 
 fun loadImageBitmap(url: String): ImageBitmap =
     URL(url).openStream().buffered().use(::loadImageBitmap)
-
-
-//----------------------------------------------------------------------------------------------------------------------
 
 @Composable
 fun getAuctionTitle(auctionTitle: String) {
@@ -217,21 +205,3 @@ fun enterBid (onEnterBid: (bid: String) -> Unit){
     }
 }
 
-@Composable
-fun countDownClock (auctionController: AuctionController) {
-
-    val endTime = auctionController.currentAuction.value.auctionTimeRemaining; // Auction timeout time
-    val initialDate = Calendar.getInstance() // Current DateTime
-    initialDate.timeZone = TimeZone.getTimeZone("GMT+1") // Set TimeZone
-
-    // Format date so it matches the pattern from auctionTimeRemaining:
-    val formatter = SimpleDateFormat("HH:mm:ss")
-    val currentTimeStamp = formatter.format(initialDate.time)
-
-    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-        Text(
-            text = currentTimeStamp,
-            color = Color.White
-        )
-    }
-}

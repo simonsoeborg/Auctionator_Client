@@ -2,9 +2,6 @@
 
 import androidx.compose.runtime.Composable
 
-/**
- * NavigationHost class
- */
 class NavigationHost(
     val navController: NavController,
     val contents: @Composable NavigationGraphBuilder.() -> Unit
@@ -25,10 +22,6 @@ class NavigationHost(
     }
 }
 
-
-/**
- * Composable to build the Navigation Host
- */
 @Composable
 fun NavigationHost.NavigationGraphBuilder.composable(
     route: String,
@@ -39,7 +32,6 @@ fun NavigationHost.NavigationGraphBuilder.composable(
     }
 
 }
-
 
 /**
  * CREDIT: https://github.com/itheamc/navigation-for-compose-for-desktop

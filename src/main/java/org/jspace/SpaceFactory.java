@@ -37,6 +37,6 @@ public interface SpaceFactory {
 	 * @param bound a limit on the number of elements in the space.
 	 * @return a new space. 
 	 */
-	public Space newSpace( int bound );
+    Space newSpace(int bound);
 
 }

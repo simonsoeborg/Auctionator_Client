@@ -82,9 +82,7 @@ fun NavigationRailSetup(
         navController.currentScreen
     }
 
-    NavigationRail(
-        /*modifier = Modifier.align(Alignment.CenterStart).fillMaxHeight()*/
-    ) {
+    NavigationRail {
         screens.forEach {
             if (it.label != "Auction") {
                 NavigationRailItem(

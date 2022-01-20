@@ -36,7 +36,7 @@ public class FormalField implements TemplateField {
 	/**
 	 * Type of matching value.
 	 */
-	private Class<?> type;
+	private final Class<?> type;
 
 	/**
 	 * Creates a template field matching any value of type <code>type</code>.

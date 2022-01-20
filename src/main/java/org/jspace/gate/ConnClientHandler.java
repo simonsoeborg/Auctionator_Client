@@ -39,10 +39,10 @@ import org.jspace.protocol.ServerMessage;
  */
 public class ConnClientHandler implements ClientHandler {
 
-	private jSpaceMarshaller marshaller;
-	private Socket client;
-	private BufferedReader reader;
-	private PrintWriter writer;
+	private final jSpaceMarshaller marshaller;
+	private final Socket client;
+	private final BufferedReader reader;
+	private final PrintWriter writer;
 	private boolean isActive = true;
 	private boolean isClosed = false;
 

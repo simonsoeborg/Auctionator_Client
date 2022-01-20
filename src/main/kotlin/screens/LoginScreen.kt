@@ -47,7 +47,6 @@ fun LoginScreen (navController: NavController) {
     }
 }
 
-
     private val greetings = listOf(
         "Bonjour",
         "Hola",

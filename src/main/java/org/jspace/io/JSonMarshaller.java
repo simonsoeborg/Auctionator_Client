@@ -39,7 +39,7 @@ import org.jspace.io.json.jSonUtils;
  */
 public class JSonMarshaller implements jSpaceMarshaller {
 
-	private jSonUtils utils = jSonUtils.getInstance();
+	private final jSonUtils utils = jSonUtils.getInstance();
 	
 	public byte[] toByte(Object o) {
 		return utils.toByte(o);

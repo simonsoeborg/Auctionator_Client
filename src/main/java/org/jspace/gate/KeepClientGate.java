@@ -46,12 +46,12 @@ public class KeepClientGate implements ClientGate {
 	
 	
 	private final jSpaceMarshaller marshaller;
-	private String host;
-	private int port;
+	private final String host;
+	private final int port;
 	private Socket socket;
 	private BufferedReader reader;
 	private PrintWriter writer;
-	private String target;
+	private final String target;
 	private final Rendezvous<String, ServerMessage> inbox;
 	private final LinkedList<ClientMessage> outbox;
 	private boolean status = true;
@@ -85,7 +85,7 @@ public class KeepClientGate implements ClientGate {
 	}
 
 	@Override
-	public void open() throws UnknownHostException, IOException {
+	public void open() throws IOException {
 		this.socket = new Socket(host, port);
 		this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.writer = new PrintWriter(socket.getOutputStream());
