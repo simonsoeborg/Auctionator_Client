@@ -32,11 +32,16 @@ import java.util.*
 
 
 @Composable
-fun AuctionScreen(navController: NavController){
+fun AuctionScreen(navController: NavController, auctionController: AuctionController){
+    val auctionData: State<SpecificAuctionData> = auctionController.currentAuction.collectAsState()
+    val onlineBidders: State<Int> = auctionController.onlineBidders.collectAsState()
+    /*
     val auctionController = AuctionController(_AuctionID.instance.getId())
     auctionController.userOnline()
     auctionController.listenForNewAuctionData()
-    val auctionData : State<SpecificAuctionData> = auctionController.currentAuction.collectAsState()
+
+     */
+    //val auctionData : State<SpecificAuctionData> = AuctionController.currentAuction.collectAsState()
 
 
     Column(
@@ -44,7 +49,7 @@ fun AuctionScreen(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row {
-                AmountOfbidders()
+                AmountOfbidders(onlineBidders.value)
             }
             Row {
                 GetItemImage(auctionData.value.auctionImageURL)
@@ -63,15 +68,15 @@ fun AuctionScreen(navController: NavController){
 }
 
 @Composable
-fun AmountOfbidders() {
+fun AmountOfbidders(bidders: Int) {
     // Todo - Server needs to keep track of this?
-    val bidders = remember { mutableStateOf(0) }
+    //val bidders = remember { mutableStateOf(0) }
     Column(
         modifier = Modifier.fillMaxWidth().padding(3.dp),
         horizontalAlignment = Alignment.End
     ){
         Row(modifier = Modifier.padding(20.dp)) {
-            Text("Amount of bidders: ${bidders.value}", fontSize = 20.sp)
+            Text("Amount of bidders: ${bidders}", fontSize = 20.sp)
         }
     }
 }

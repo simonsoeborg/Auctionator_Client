@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import controller.AuctionController
 import controller.LobbyController
 import screens.AuctionScreen
 import screens.CreateAuctionScreen
@@ -47,10 +48,11 @@ enum class Screen(
 fun CustomNavigationHost(
     navController: NavController,
     lobbyController: LobbyController,
+    auctionController: AuctionController
 ) {
     NavigationHost(navController) {
         composable(Screen.AuctionatorScreen.name) {
-            LobbyScreen(navController, lobbyController)
+            LobbyScreen(navController, lobbyController, auctionController)
         }
 
         composable(Screen.LoginScreen.name) {
@@ -62,7 +64,7 @@ fun CustomNavigationHost(
         }
 
         composable(Screen.AuctionScreen.name) {
-            AuctionScreen(navController)
+            AuctionScreen(navController, auctionController)
         }
 
     }.build()
@@ -73,6 +75,7 @@ fun CustomNavigationHost(
 fun NavigationRailSetup(
     navController: NavController,
     lobbyController: LobbyController,
+    auctionController: AuctionController
 ) {
     val screens = Screen.values().toList()
     val currentScreen by remember {
@@ -107,6 +110,6 @@ fun NavigationRailSetup(
     Box(
         modifier = Modifier.fillMaxHeight()
     ) {
-        CustomNavigationHost(navController = navController, lobbyController)
+        CustomNavigationHost(navController = navController, lobbyController, auctionController)
     }
 }

@@ -13,8 +13,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import controller.AuctionController
 import controller.LobbyController
 import factories._AuctionID
+import kotlinx.coroutines.*
 import model.AuctionData
 import navigation.NavController
 import navigation.Screen
@@ -23,13 +25,12 @@ import navigation.Screen
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview
-fun LobbyScreen(navController: NavController, lobbyController: LobbyController) {
-
-    val allAuctions : State<List<AuctionData>> = lobbyController.allAuctions.collectAsState()
+fun LobbyScreen(navController: NavController, lobbyController: LobbyController, auctionController: AuctionController) {
     lobbyController.refreshAllAuctions()
+    val allAuctions : State<List<AuctionData>> = lobbyController.allAuctions.collectAsState()
 
     if(LoginItems.isLoggedIn) {
-        currentAuctions(navController, allAuctions.value)
+        currentAuctions(navController, allAuctions.value, auctionController)
     } else {
         Column(modifier = Modifier.fillMaxHeight(1f)
             .fillMaxWidth(1f)
@@ -43,8 +44,8 @@ fun LobbyScreen(navController: NavController, lobbyController: LobbyController) 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun currentAuctions(navController: NavController, auctionsState: List<AuctionData>){
-
+fun currentAuctions(navController: NavController, auctionsState: List<AuctionData>, auctionController: AuctionController){
+    val scope = CoroutineScope(Dispatchers.IO)
     Column(
         modifier = Modifier.fillMaxHeight(1f).fillMaxWidth(1f),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -93,7 +94,23 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
                 ) {
                     items(auctionsState) { auction ->
                         Row(modifier = Modifier.clickable {
-                            _AuctionID.instance.setId(auction.auctionId.toString())
+                            /*
+                            AuctionController.auctionID = auction.auctionId.toString()
+                            AuctionController.userOnline()
+                            AuctionController.listenForNewAuctionData()
+                             */
+                            auctionController.auctionID = auction.auctionId.toString()
+                            //print(auctionController.auctionID)
+                            auctionController.joinAuction()
+                            MainScope().launch {
+                                delay(500L)
+                            }
+
+                            scope.launch {
+                                delay(200L)
+                                auctionController.userOnline()
+                                auctionController.listenForNewAuctionData()
+                            }
                             navController.navigate(Screen.AuctionScreen.name)
                         }) {
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.5F)) {

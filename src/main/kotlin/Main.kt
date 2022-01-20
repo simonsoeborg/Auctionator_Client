@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import controller.AuctionController
 import controller.LobbyController
 import navigation.NavigationRailSetup
 import navigation.Screen
@@ -42,6 +43,7 @@ fun main() = application {
 fun app() {
     val navController by rememberNavController(Screen.LoginScreen.name)
     val lobbyController = LobbyController()
+    val auctionController = AuctionController()
     AuctionatorTheme {
         Surface(
             modifier = Modifier.background(color = MaterialTheme.colors.background)
@@ -49,10 +51,9 @@ fun app() {
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-                NavigationRailSetup(navController, lobbyController)
+                NavigationRailSetup(navController, lobbyController, auctionController)
             }
         }
     }
-
 }
 

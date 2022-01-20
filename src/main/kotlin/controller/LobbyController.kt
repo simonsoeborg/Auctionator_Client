@@ -32,6 +32,7 @@ class LobbyController {
         lobbyScope.launch {
             LobbySingleton.instance.getAllAuctions().collect {
                 _allAuctions.value = it
+                println("Collected new value for allAuctions @ Lobbyscreen")
             }
         }
     }
