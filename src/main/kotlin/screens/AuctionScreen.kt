@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.loadImageBitmap
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,30 +28,28 @@ import java.net.URL
 fun AuctionScreen(navController: NavController, auctionController: AuctionController){
     val auctionData: State<SpecificAuctionData> = auctionController.currentAuction.collectAsState()
     val onlineBidders: State<Int> = auctionController.onlineBidders.collectAsState()
+    val timeRemaining: State<Int> = auctionController.timeRemaining.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxHeight().fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row {
-            AmountOfbidders(onlineBidders.value)
-        }
         Row{
-            LeaveAuctionButton(navController, onLeaveAuction = { auctionController.leaveAuction() })
+            Column(
+            modifier = Modifier.fillMaxWidth().padding(50.dp),
+            horizontalAlignment = Alignment.End
+            ){
+                AmountOfbidders(onlineBidders.value)
+                Timer(timeRemaining.value)
+            }
         }
-        Row {
-            GetItemImage(auctionData.value.auctionImageURL)
-        }
-        Row {
-            getAuctionTitle(auctionData.value.auctionTitle)
-        }
-        Row {
-            getAuctionDescription(auctionData.value.auctionDescription)
-        }
-        Row {
-            currentBidAndPrice(auctionData.value.auctionHighestBid, auctionData.value.auctionPrice)
-        }
-        Row { enterBid(onEnterBid = {auctionController.bidOnAuction(it)}) }
+        Row { ItemImage(auctionData.value.auctionImageURL) }
+        Row { AuctionTitle(auctionData.value.auctionTitle) }
+        Row { AuctionDescription(auctionData.value.auctionDescription) }
+        Row { StartingPrice(auctionData.value.auctionPrice) }
+        Row { CurrentBid(auctionData.value.auctionHighestBid) }
+        Row { EnterBid(onEnterBid = {auctionController.bidOnAuction(it)}) }
+        Row{ LeaveAuctionButton(navController, onLeaveAuction = { auctionController.leaveAuction() }) }
     }
 }
 
@@ -71,16 +70,11 @@ fun LeaveAuctionButton(navController: NavController, onLeaveAuction: () -> Unit)
 @Composable
 fun AmountOfbidders(bidders: Int) {
 
-    Column(
-        modifier = Modifier.fillMaxWidth().padding(23.dp),
-        horizontalAlignment = Alignment.End
-    ){
         Text("Amount of bidders: ${bidders}", fontSize = 20.sp)
-    }
 }
 
 @Composable
-fun GetItemImage(url: String) {
+fun ItemImage(url: String) {
     Column(
         modifier = Modifier.padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -128,7 +122,7 @@ fun loadImageBitmap(url: String): ImageBitmap =
     URL(url).openStream().buffered().use(::loadImageBitmap)
 
 @Composable
-fun getAuctionTitle(auctionTitle: String) {
+fun AuctionTitle(auctionTitle: String) {
     Column(
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -140,46 +134,55 @@ fun getAuctionTitle(auctionTitle: String) {
 }
 
 @Composable
-fun getAuctionDescription(description: String) {
+fun AuctionDescription(description: String) {
     Column(
         modifier = Modifier.fillMaxWidth(.25f).padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(modifier = Modifier.padding(bottom = 10.dp)) {
-            Text(description, fontSize = 12.sp)
+            Text(description, fontSize = 14.sp)
         }
     }
 }
 
 @Composable
-fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
+fun StartingPrice(startingPrice: String){
     Column(
         modifier = Modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row {
-            Text("The starting price is ", fontSize = 15.sp, modifier = Modifier.padding(bottom = 25.dp))
-            Text("$minimumPrice $", color = Color(0xFF55aaaa), modifier = Modifier.padding(bottom = 25.dp))
+            Text("The starting price is ", fontSize = 14.sp, modifier = Modifier.padding(bottom = 25.dp))
+            Text("$startingPrice", fontSize = 14.sp, color = Color(0xFF55aaaa), modifier = Modifier.padding(bottom = 25.dp))
         }
+    }
+}
+
+@Composable
+fun CurrentBid(highestBid: String) {
+    Column(
+        modifier = Modifier.padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
         if (highestBid.toInt()==0){
             Row {
-                Text("There is currently")
+                Text("There are currently")
                 Text(" NO ", color = Color.Red)
                 Text("bids on this item")
             }
         }
         else {
             Row {
-                Text("The current highest bid is ", fontSize = 15.sp)
-                Text("$highestBid $", fontSize = 15.sp, color = Color.Green)
+                Text("The current highest bid is ", fontSize = 14.sp)
+                Text("$highestBid $", fontSize = 14.sp, color = Color.Green)
             }
         }
     }
 }
 
 @Composable
-fun enterBid (onEnterBid: (bid: String) -> Unit){
+fun EnterBid (onEnterBid: (bid: String) -> Unit){
     val userBid = remember { mutableStateOf(0) }
     Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
         TextField(
@@ -190,7 +193,7 @@ fun enterBid (onEnterBid: (bid: String) -> Unit){
             placeholder = { Text("bid") },
         )
 
-        TextButton(onClick = {
+        Button(onClick = {
             if (userBid.value <= LoginItems.money){
                 // Send bid
                 println("Your bid have now been sent: "+ userBid.value)
@@ -199,9 +202,59 @@ fun enterBid (onEnterBid: (bid: String) -> Unit){
             else { println("You do not have enough money: "+ userBid.value + " is higher than your current saldo: "+ LoginItems.money)
             }
 
-        }, colors = ButtonDefaults.textButtonColors(backgroundColor = Color(0xFF55aaaa)), modifier = Modifier.padding(start = 20.dp)){
+        }, modifier = Modifier.padding(start = 20.dp)){
             Text("Send bid", color = Color.White)
         }
     }
 }
 
+@Composable
+fun countDownClock (auctionController: AuctionController) {
+    val endTime = auctionController.currentAuction.value.auctionTimeRemaining; // Auction timeout time
+    val initialDate = Calendar.getInstance() // Current DateTime
+    initialDate.timeZone = TimeZone.getTimeZone("GMT+1") // Set TimeZone
+
+    // Format date so it matches the pattern from auctionTimeRemaining:
+    val formatter = SimpleDateFormat("HH:mm:ss")
+    val currentTimeStamp = formatter.format(initialDate.time)
+
+    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Text(
+            text = currentTimeStamp,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+fun Timer(
+    totalTime: Int,
+) {
+    var currentTime by remember {
+        mutableStateOf(totalTime)
+    }
+    var isTimerRunning by remember {
+        mutableStateOf(true)
+    }
+    LaunchedEffect(key1 = currentTime, key2 = isTimerRunning) {
+        if(currentTime > 0 && isTimerRunning) {
+            delay(1000)
+            currentTime -= 1
+
+        }
+    }
+    Box(
+        contentAlignment = Alignment.Center,
+
+    ) {
+       Text(
+            text = if(currentTime!=0){("Time remaining: "+ (currentTime/60).toString() +":"+(currentTime%60).toString())}
+           else{
+               "Auction is over!"
+               },
+            fontSize = 22.sp,
+            fontWeight = Bold,
+            color = Color.White
+        )
+    }
+}
