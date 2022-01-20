@@ -100,7 +100,7 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
                             auctionController.auctionID = auction.auctionId.toString()
                             auctionController.joinAuction()
                             MainScope().launch {
-                                delay(500L)
+                                delay(300L)
                             }
 
                             scope.launch {
