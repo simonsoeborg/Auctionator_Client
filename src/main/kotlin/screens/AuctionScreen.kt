@@ -2,10 +2,7 @@ package screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,49 +32,55 @@ import java.util.*
 fun AuctionScreen(navController: NavController, auctionController: AuctionController){
     val auctionData: State<SpecificAuctionData> = auctionController.currentAuction.collectAsState()
     val onlineBidders: State<Int> = auctionController.onlineBidders.collectAsState()
-    /*
-    val auctionController = AuctionController(_AuctionID.instance.getId())
-    auctionController.userOnline()
-    auctionController.listenForNewAuctionData()
-
-     */
-    //val auctionData : State<SpecificAuctionData> = AuctionController.currentAuction.collectAsState()
-
 
     Column(
-            modifier = Modifier.fillMaxHeight().fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row {
-                AmountOfbidders(onlineBidders.value)
-            }
-            Row {
-                GetItemImage(auctionData.value.auctionImageURL)
-            }
-            Row {
-                getAuctionTitle(auctionData.value.auctionTitle)
-            }
-            Row {
-                getAuctionDescription(auctionData.value.auctionDescription)
-            }
-            Row {
-                currentBidAndPrice(auctionData.value.auctionHighestBid, auctionData.value.auctionPrice)
-            }
-            Row { enterBid(onEnterBid = {auctionController.bidOnAuction(it)}) }
+        modifier = Modifier.fillMaxHeight().fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row {
+            AmountOfbidders(onlineBidders.value)
         }
+        Row{
+            LeaveAuctionButton(navController, onLeaveAuction = { auctionController.leaveAuction() })
+        }
+        Row {
+            GetItemImage(auctionData.value.auctionImageURL)
+        }
+        Row {
+            getAuctionTitle(auctionData.value.auctionTitle)
+        }
+        Row {
+            getAuctionDescription(auctionData.value.auctionDescription)
+        }
+        Row {
+            currentBidAndPrice(auctionData.value.auctionHighestBid, auctionData.value.auctionPrice)
+        }
+        Row { enterBid(onEnterBid = {auctionController.bidOnAuction(it)}) }
+    }
+}
+
+@Composable
+fun LeaveAuctionButton(navController: NavController, onLeaveAuction: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        Button(onClick = {
+            onLeaveAuction()
+            navController.navigateBack()
+        }) {
+            Text("Leave Auction", fontSize = 12.sp)
+        }
+    }
 }
 
 @Composable
 fun AmountOfbidders(bidders: Int) {
-    // Todo - Server needs to keep track of this?
-    //val bidders = remember { mutableStateOf(0) }
+
     Column(
-        modifier = Modifier.fillMaxWidth().padding(3.dp),
+        modifier = Modifier.fillMaxWidth().padding(23.dp),
         horizontalAlignment = Alignment.End
     ){
-        Row(modifier = Modifier.padding(20.dp)) {
-            Text("Amount of bidders: ${bidders}", fontSize = 20.sp)
-        }
+        Text("Amount of bidders: ${bidders}", fontSize = 20.sp)
     }
 }
 
@@ -160,7 +163,6 @@ fun getAuctionDescription(description: String) {
     }
 }
 
-
 @Composable
 fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
     Column(
@@ -179,10 +181,12 @@ fun currentBidAndPrice(highestBid: String, minimumPrice : String) {
                 Text("bids on this item")
             }
         }
-        else
-            Row { Text("The current highest bid is ", fontSize = 15.sp)
-            Text("$highestBid $", fontSize = 15.sp, color = Color.Green)
+        else {
+            Row {
+                Text("The current highest bid is ", fontSize = 15.sp)
+                Text("$highestBid $", fontSize = 15.sp, color = Color.Green)
             }
+        }
     }
 }
 

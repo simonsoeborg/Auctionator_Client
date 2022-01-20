@@ -51,24 +51,27 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row {
-            Column(modifier = Modifier.width(200.dp)) {
-                Card(modifier = Modifier.padding(4.dp).height(80.dp)) {
+            Column(modifier = Modifier.width(400.dp).padding(30.dp)) {
+                Box(modifier = Modifier.padding(4.dp).height(150.dp)) {
                     Column {
-                        Row {
-                            Text("Hej " + LoginItems.userName + "!")
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "Hi " + LoginItems.userName + "!",
+                                style = TextStyle(textAlign = TextAlign.Center, fontSize = 24.sp)
+                            )
                         }
-                        Row {
-                            Text("Logged In: " + LoginItems.isLoggedIn)
-                        }
-                        Row {
-                            Text("Balance: " + LoginItems.money + " $")
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "Welcome to Auctionator. Feel free to try and bid on auctions.\nIf you want to leave an ongoing auction press the Leave Auction button.",
+                                style = TextStyle( fontSize = 12.sp)
+                            )
                         }
                     }
                 }
 
             }
-            Column(modifier = Modifier.width(600.dp)) {
-                Row {
+            Column(modifier = Modifier.width(600.dp).padding(30.dp)) {
+                Row(modifier = Modifier.padding(8.dp)) {
                     Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.5F)) {
                         Text(
                             text = "Title",
@@ -94,13 +97,8 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
                 ) {
                     items(auctionsState) { auction ->
                         Row(modifier = Modifier.clickable {
-                            /*
-                            AuctionController.auctionID = auction.auctionId.toString()
-                            AuctionController.userOnline()
-                            AuctionController.listenForNewAuctionData()
-                             */
+
                             auctionController.auctionID = auction.auctionId.toString()
-                            //print(auctionController.auctionID)
                             auctionController.joinAuction()
                             MainScope().launch {
                                 delay(500L)
@@ -116,6 +114,7 @@ fun currentAuctions(navController: NavController, auctionsState: List<AuctionDat
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.5F)) {
                                 Text(
                                     text = auction.auctionTitle,
+                                    style = TextStyle(textAlign = TextAlign.Center)
                                 )
                             }
                             Card(modifier = Modifier.padding(4.dp).height(40.dp).weight(0.2F)) {

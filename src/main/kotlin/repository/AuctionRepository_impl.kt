@@ -65,12 +65,20 @@ class AuctionRepository_impl : AuctionRepository {
         )
     }
 
-
-
     override fun sendBid(bid: String, auctionId: String) {
         if (currentAuctionSpace.put("bid", auctionId, bid, LoginItems.userName)){
             println("auctionId bid: "+auctionId + "username " +LoginItems.userName)
         }
+    }
+
+    override fun leaveAuction(auctionId: String, username: String) {
+         val res = currentAuctionSpace.get(
+            ActualField("online"),
+            ActualField(auctionId),
+            ActualField(username)
+        )
+
+        println("leaving auction: " + res[1])
     }
 
     override fun getOnlineClients(): String {

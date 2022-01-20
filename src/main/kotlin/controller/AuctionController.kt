@@ -46,12 +46,11 @@ class AuctionController {
     fun userOnline(): Boolean {
         return auctionRepo.userOnline(auctionID)
     }
-    /*
-    fun leaveAuction(): Boolean{
-        return auctionRepo.leaveAuction
-    }
 
-     */
+    fun leaveAuction(){
+        auctionRepo.leaveAuction(auctionID, LoginItems.userName)
+        _onlineBidders.value = 0
+    }
 
     fun listenForOnlineBidders(){
         auctionScope.launch {
@@ -61,8 +60,16 @@ class AuctionController {
 
     fun listenForNewAuctionData(){
         auctionScope.launch {
-            _currentAuction.value = auctionRepo.updateSpecificAuctionData(auctionID, LoginItems.userName)
-            println("Highest Bid " + _currentAuction.value.auctionHighestBid)
+            while (true) {
+                withTimeout(1500L){
+                    try {
+                        _currentAuction.value = auctionRepo.updateSpecificAuctionData(auctionID, LoginItems.userName)
+                    } catch (t : TimeoutCancellationException) {
+                        println(t)
+                    }
+                }
+                delay(1000L)
+            }
         }
     }
 
