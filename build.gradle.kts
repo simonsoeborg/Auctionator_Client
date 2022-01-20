@@ -19,17 +19,17 @@ repositories {
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation("com.google.code.gson:gson:2.8.9")
-    implementation("org.kodein.di:kodein-di:7.10.0")
 }
 
 tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "14"
 }
 
 compose.desktop {
     application {
         mainClass = "MainKt"
         nativeDistributions {
+            includeAllModules = true
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Auctionator"
             packageVersion = "1.0.0"
