@@ -248,7 +248,7 @@ fun Timer(
 
     ) {
        Text(
-            text = if(currentTime!=0){("Time remaining: "+ (currentTime/60).toString() +":"+(currentTime%60).toString())}
+            text = if(currentTime!=0){("Time remaining: "+ (currentTime/60).toString()+ " minutes "+(currentTime%60).toString()+" seconds")}
            else{
                "Auction is over!"
                },

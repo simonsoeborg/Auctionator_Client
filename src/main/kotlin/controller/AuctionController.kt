@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import model.SpecificAuctionData
 import repository.AuctionRepository_impl
+import java.time.LocalTime
 import javax.swing.plaf.nimbus.State
 
 class AuctionController {
@@ -49,9 +50,13 @@ class AuctionController {
         val hours = temp[0].toInt()
         val minutes = temp[1].toInt()
         val seconds = temp[2].toInt()
-        // "1:05:13" = 1*60*60 = 3600 -  5*60
-        // return in minutes
-        return (hours*60*60+minutes*60+seconds)/60
+        val currentTime = LocalTime.now()
+        val hours2 = currentTime.hour
+        val minutes2 = currentTime.minute
+        val seconds2 = currentTime.second
+        val timeRemaining = ((hours-hours2)*60*60+(minutes-minutes2)*60+seconds-seconds2)
+        println("auction time remaining: "+ timeRemaining)
+        return timeRemaining
     }
 
     fun userOnline(): Boolean {
